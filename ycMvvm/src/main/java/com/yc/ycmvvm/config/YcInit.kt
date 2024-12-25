@@ -10,10 +10,7 @@ import com.elvishew.xlog.XLog
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator
-import com.scwang.smart.refresh.layout.simple.SimpleComponent
 import com.yc.ycmvvm.R
-import com.yc.ycmvvm.data.constans.YcNetErrorCode
 import com.yc.ycmvvm.exception.YcException
 import com.yc.ycmvvm.extension.YcLogExt
 import com.yc.ycmvvm.view.dialog.YcDialogCommon
@@ -29,7 +26,7 @@ import java.io.File
  * Date: 2021/6/3 13:54
  * UseDes:
  */
-class YcJetpack private constructor() {
+class YcInit private constructor() {
     companion object {
         const val OTHER_BASE_URL = "other_base_url"
 
@@ -46,13 +43,13 @@ class YcJetpack private constructor() {
 
     private object YcJetpack2Holder {
         @JvmStatic
-        val holder = YcJetpack()
+        val holder = YcInit()
     }
 
     /**
      * 加载网络图片失败时显示的图片
      */
-    var mImgIdResFail: Int = R.drawable.yc_loading
+    var mImgIdResFail: Int = R.drawable.yc_loading_fail
 
     /**
      * 加载网络图片加载时显示的图片

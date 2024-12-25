@@ -1,6 +1,6 @@
 package com.yc.ycmvvm.net
 
-import com.yc.ycmvvm.config.YcJetpack
+import com.yc.ycmvvm.config.YcInit
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -24,7 +24,7 @@ class YcRetrofitUtil private constructor() {
     private var mRetrofit: Retrofit? = null
     private fun createClient(): OkHttpClient {
         return OkHttpClient.Builder().apply {
-            for (interceptor in YcJetpack.mInstance.mInterceptor) {
+            for (interceptor in YcInit.mInstance.mInterceptor) {
                 addInterceptor(interceptor)
             }
             addInterceptor(YcInterceptorLog())
@@ -34,7 +34,7 @@ class YcRetrofitUtil private constructor() {
         }.build()
     }
 
-    private fun createRetrofit(baseUrl: String = YcJetpack.mInstance.mDefaultBaseUrl): Retrofit {
+    private fun createRetrofit(baseUrl: String = YcInit.mInstance.mDefaultBaseUrl): Retrofit {
         return Retrofit.Builder()
             .client(createClient())
             .baseUrl(baseUrl)

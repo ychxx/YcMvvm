@@ -3,22 +3,21 @@ package com.yc.ycmvvm.utils
 import android.content.Context
 import android.content.res.Resources
 import android.util.DisplayMetrics
-import android.view.View
 import android.view.WindowManager
-import com.yc.ycmvvm.config.YcJetpack
+import com.yc.ycmvvm.config.YcInit
 
 /**
  *
  */
-fun Int.ycDp(resources: Resources = YcJetpack.mInstance.getResources()): Int {
+fun Int.ycDp(resources: Resources = YcInit.mInstance.getResources()): Int {
     return (this * resources.displayMetrics.density + 0.5).toInt()
 }
 
-fun Float.ycDp(resources: Resources = YcJetpack.mInstance.getResources()): Float {
+fun Float.ycDp(resources: Resources = YcInit.mInstance.getResources()): Float {
     return this * resources.displayMetrics.density + 0.5f
 }
 
-fun Double.ycDp(resources: Resources = YcJetpack.mInstance.getResources()): Double {
+fun Double.ycDp(resources: Resources = YcInit.mInstance.getResources()): Double {
     return (this * resources.displayMetrics.density + 0.5)
 }
 
@@ -27,12 +26,12 @@ object YcUI {
      * 将dp值转换为px值
      */
     @JvmStatic
-    fun dpToPx(dp: Float, resources: Resources = YcJetpack.mInstance.getResources()): Int {
+    fun dpToPx(dp: Float, resources: Resources = YcInit.mInstance.getResources()): Int {
         return (resources.displayMetrics.density * dp + 0.5f).toInt()
     }
 
     @JvmStatic
-    fun dip2pxFloat(dp: Float, resources: Resources = YcJetpack.mInstance.getResources()): Float {
+    fun dip2pxFloat(dp: Float, resources: Resources = YcInit.mInstance.getResources()): Float {
         return resources.displayMetrics.density * dp + 0.5f
     }
 
@@ -41,7 +40,7 @@ object YcUI {
      * 将px值转换为dp值
      */
     @JvmStatic
-    fun pxToDp(px: Float, resources: Resources = YcJetpack.mInstance.getResources()): Int {
+    fun pxToDp(px: Float, resources: Resources = YcInit.mInstance.getResources()): Int {
         return (px / resources.displayMetrics.density + 0.5f).toInt()
     }
 
@@ -49,7 +48,7 @@ object YcUI {
      * sp转px
      */
     @JvmStatic
-    fun spToPx(sp: Float, resources: Resources = YcJetpack.mInstance.getResources()): Int {
+    fun spToPx(sp: Float, resources: Resources = YcInit.mInstance.getResources()): Int {
         return (sp * resources.displayMetrics.scaledDensity + 0.5f).toInt()
     }
 
@@ -57,7 +56,7 @@ object YcUI {
      * px转sp
      */
     @JvmStatic
-    fun pxToSp(px: Float, resources: Resources = YcJetpack.mInstance.getResources()): Int {
+    fun pxToSp(px: Float, resources: Resources = YcInit.mInstance.getResources()): Int {
         return (resources.displayMetrics.scaledDensity / px + 0.5f).toInt()
     }
 
@@ -79,7 +78,7 @@ object YcUI {
 
     @JvmStatic
     fun getDisplayMetrics(): DisplayMetrics {
-        return getDisplayMetrics(YcJetpack.mInstance.mApplication)
+        return getDisplayMetrics(YcInit.mInstance.mApplication)
     }
 
     @JvmStatic

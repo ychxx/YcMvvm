@@ -11,7 +11,7 @@ import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
-import com.yc.ycmvvm.config.YcJetpack
+import com.yc.ycmvvm.config.YcInit
 import java.io.File
 
 /**
@@ -56,7 +56,7 @@ object YcVersionUtil {
      * 获取版本号
      */
     @JvmStatic
-    val versionCode: Long = getVersionCode(YcJetpack.mInstance.mApplication)
+    val versionCode: Long = getVersionCode(YcInit.mInstance.mApplication)
 
     /**
      * 获取版本号
@@ -82,7 +82,7 @@ object YcVersionUtil {
      * 获取版本名
      */
     @JvmStatic
-    val versionName = getVersionName(YcJetpack.mInstance.mApplication)
+    val versionName = getVersionName(YcInit.mInstance.mApplication)
 
     /**
      * 获取版本名
@@ -104,7 +104,7 @@ object YcVersionUtil {
      * 获取包名
      */
     @JvmStatic
-    val packageName = getPackageName(YcJetpack.mInstance.mApplication)
+    val packageName = getPackageName(YcInit.mInstance.mApplication)
 
     /**
      * 获取包名

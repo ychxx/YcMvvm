@@ -36,7 +36,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.target.ImageViewTarget
 import com.bumptech.glide.signature.ObjectKey
-import com.yc.ycmvvm.config.YcJetpack
+import com.yc.ycmvvm.config.YcInit
 import com.yc.ycmvvm.utils.YcColorUtil
 import com.yc.ycmvvm.utils.YcSoftInputUtil
 import com.yc.ycmvvm.utils.YcUI
@@ -288,7 +288,7 @@ fun RecyclerView.ycInitLinearLayoutManage(orientation: Int = RecyclerView.VERTIC
 /**
  * 加载网络图片
  */
-fun ImageView.ycLoadImageNet(imageNet: String?, placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading, errorImg: Int = YcJetpack.mInstance.mImgIdResFail) {
+fun ImageView.ycLoadImageNet(imageNet: String?, placeholderImg: Int = YcInit.mInstance.mImgIdResLoading, errorImg: Int = YcInit.mInstance.mImgIdResFail) {
     Glide.with(context)
         .asBitmap()
         .placeholder(placeholderImg)
@@ -302,8 +302,8 @@ fun ImageView.ycLoadImageNet(imageNet: String?, placeholderImg: Int = YcJetpack.
  */
 fun ImageView.ycLoadImageNetWithSize(
     imageNet: String?, width: Int = 180, height: Int = 180,
-    placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading,
-    errorImg: Int = YcJetpack.mInstance.mImgIdResFail
+    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
+    errorImg: Int = YcInit.mInstance.mImgIdResFail
 
 ) {
     Glide.with(context)
@@ -316,8 +316,8 @@ fun ImageView.ycLoadImageNetWithSize(
 
 fun ImageView.ycLoadImageNetLong(
     imageNet: String?,
-    placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading,
-    errorImg: Int = YcJetpack.mInstance.mImgIdResFail
+    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
+    errorImg: Int = YcInit.mInstance.mImgIdResFail
 ) {
     Glide.with(context)
         .asBitmap()
@@ -340,8 +340,8 @@ fun ImageView.ycLoadImageHeader(imageNet: String?, headerMap: Map<String, String
  */
 fun ImageView.ycLoadImageNetCircle(
     imageNet: String?,
-    placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading,
-    errorImg: Int = YcJetpack.mInstance.mImgIdResFail
+    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
+    errorImg: Int = YcInit.mInstance.mImgIdResFail
 ) {
     Glide.with(context)
         .asBitmap()
@@ -358,8 +358,8 @@ fun ImageView.ycLoadImageNetCircle(
 fun ImageView.ycLoadImageNetCircle(
     imgNetUrl: String?,
     imageUpdateTime: String,
-    placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading,
-    errorImg: Int = YcJetpack.mInstance.mImgIdResFail
+    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
+    errorImg: Int = YcInit.mInstance.mImgIdResFail
 ) {
     Glide.with(context)
         .applyDefaultRequestOptions(RequestOptions().signature(ObjectKey(imageUpdateTime)))
@@ -379,8 +379,8 @@ fun ImageView.ycLoadImageNetCircle(
 fun ImageView.ycLoadImageNetFilletDp(
     imageNet: String?,
     roundingRadius: Float,
-    placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading,
-    errorImg: Int = YcJetpack.mInstance.mImgIdResFail
+    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
+    errorImg: Int = YcInit.mInstance.mImgIdResFail
 ) {
     Glide.with(context)
         .asBitmap()
@@ -398,8 +398,8 @@ fun ImageView.ycLoadImageNetFilletDp(
 fun ImageView.ycLoadImageNetFilletPx(
     imageNet: String?,
     roundingRadius: Int,
-    placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading,
-    errorImg: Int = YcJetpack.mInstance.mImgIdResFail
+    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
+    errorImg: Int = YcInit.mInstance.mImgIdResFail
 ) {
     Glide.with(context)
         .asBitmap()
@@ -415,8 +415,8 @@ fun ImageView.ycLoadImageNetFilletPx(
  */
 fun ImageView.ycLoadImageNet(
     imgNetUrl: String?, imageUpdateTime: String,
-    placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading,
-    errorImg: Int = YcJetpack.mInstance.mImgIdResFail
+    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
+    errorImg: Int = YcInit.mInstance.mImgIdResFail
 ) {
     Glide.with(context)
         .applyDefaultRequestOptions(RequestOptions().signature(ObjectKey(imageUpdateTime)))
@@ -490,8 +490,8 @@ fun ImageView.ycLoadImageResCircle(@DrawableRes imgRes: Int) {
 fun ImageView.ycLoadImageResCircle(
     @DrawableRes imgRes: Int,
     roundingRadius: Int,
-    placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading,
-    errorImg: Int = YcJetpack.mInstance.mImgIdResFail,
+    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
+    errorImg: Int = YcInit.mInstance.mImgIdResFail,
 ) {
     Glide.with(context)
         .load(imgRes)
@@ -501,8 +501,8 @@ fun ImageView.ycLoadImageResCircle(
 
 fun ImageView.ycLoadImageResCircleCenterInside(
     @DrawableRes imgRes: Int, roundingRadius: Int,
-    placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading,
-    errorImg: Int = YcJetpack.mInstance.mImgIdResFail,
+    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
+    errorImg: Int = YcInit.mInstance.mImgIdResFail,
 ) {
     Glide.with(context)
         .load(imgRes)
@@ -542,8 +542,8 @@ fun ImageView.ycLoadImageViewTarget(
 
 fun ImageView.ycLoadBitmapImageViewTarget(
     url: String, width: Int = 180, height: Int = 180, sizeMultiplier: Float = 0.5f,
-    placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading,
-    errorImg: Int = YcJetpack.mInstance.mImgIdResFail,
+    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
+    errorImg: Int = YcInit.mInstance.mImgIdResFail,
     setResourceCallBack: ((Bitmap?) -> Unit)? = null,
 ) {
     Glide.with(context)
@@ -564,8 +564,8 @@ fun ImageView.ycLoadBitmapImageViewTarget(
 
 fun ImageView.ycLoadAsGifImage(
     url: String,
-    placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading,
-    errorImg: Int = YcJetpack.mInstance.mImgIdResFail
+    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
+    errorImg: Int = YcInit.mInstance.mImgIdResFail
 ) {
     Glide.with(context)
         .asGif()
@@ -577,8 +577,8 @@ fun ImageView.ycLoadAsGifImage(
 
 fun ImageView.ycLoadGridImage(
     url: String, width: Int = 180, height: Int = 180,
-    placeholderImg: Int = YcJetpack.mInstance.mImgIdResLoading,
-    errorImg: Int = YcJetpack.mInstance.mImgIdResFail
+    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
+    errorImg: Int = YcInit.mInstance.mImgIdResFail
 ) {
     Glide.with(context)
         .load(url)

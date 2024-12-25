@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.XXPermissions
 import com.yc.ycmvvm.config.YcActivityManager
-import com.yc.ycmvvm.config.YcJetpack
+import com.yc.ycmvvm.config.YcInit
 import com.yc.ycmvvm.extension.ycLogE
 import com.yc.ycmvvm.view.dialog.YcIDialog
 
@@ -57,7 +57,7 @@ open class YcPermissionUtil {
     open var mDialog: YcIDialog<*>? = null
 
     private fun initDialog() {
-        mDialog = YcJetpack.mInstance.mDefaultPermissionDialog.invoke(this.context, this.lifecycleOwner)
+        mDialog = YcInit.mInstance.mDefaultPermissionDialog.invoke(this.context, this.lifecycleOwner)
     }
 
     /**
