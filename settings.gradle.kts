@@ -22,5 +22,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "YcMvvm"
-include(":app")
 include(":ycMvvm")
