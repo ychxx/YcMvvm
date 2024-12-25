@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="yc_black">#FF000000</color>
+    <color name="yc_white">#FFFFFFFF</color>
+    <color name="yc_transparent">#00000000</color>
+    <color name="yc_blue">#2288FB</color>
+    <color name="yc_gray">#F8F8F8</color>
+</resources>

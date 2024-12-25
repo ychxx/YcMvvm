@@ -49,8 +49,36 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    /**--retrofit  网络请求--**/
+    api(libs.squareup.retrofit)
+    implementation(libs.squareup.converter.gson)
+    implementation(libs.retrofit.mock)
+    implementation(libs.squareup.converter.scalars)
+
+    /**--okHttp-logging-interceptor 日志拦截器--**/
+    api(libs.logging.interceptor)
+    implementation(libs.github.glide)
+    implementation(libs.xxpermissions)
+    /**-- Lifecycle components 生命周期管理--**/
+    api(libs.androidx.lifecycle.lifecycle.viewmodel.ktx4)
+
+    /**--json解析--**/
+    api(libs.google.gson)
+
+    /**--log日志--**/
+    implementation(libs.elvishew.xlog)
+
+    /**--下载--**/
+    api(libs.org.xutils.xutils3)
+
+    /**-- 加载更多和刷新 --**/
+    api(libs.refresh.layout.kernel)    //核心必须依赖
+    implementation(libs.refresh.header.material)   //谷歌刷新头
+    implementation(libs.refresh.footer.classics)   //经典加载
 }
