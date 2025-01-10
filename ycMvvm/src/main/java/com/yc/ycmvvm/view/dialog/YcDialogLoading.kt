@@ -57,11 +57,11 @@ class YcDialogLoading @JvmOverloads constructor(context: Context, lifecycleOwner
 
 
     override fun show() {
-        show()
+        super.show()
     }
 
     override fun loadHide() {
-        this.dismiss()
+        super.dismiss()
     }
 
     override fun loadShow(msg: String?) {
