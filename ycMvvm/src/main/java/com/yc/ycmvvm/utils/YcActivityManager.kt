@@ -1,10 +1,9 @@
-package com.yc.ycmvvm.config
+package com.yc.ycmvvm.utils
 
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import java.util.*
-import kotlin.reflect.KProperty1
 
 /**
  * Creator: yc

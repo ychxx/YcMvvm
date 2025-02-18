@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
 import com.yc.ycmvvm.exception.YcException
-import com.yc.ycmvvm.extension.showToast
+import com.yc.ycmvvm.extension.ycShowToast
 import com.yc.ycmvvm.net.YcResult
 import com.yc.ycmvvm.view.dialog.YcILoading
 import com.yc.ycmvvm.view.dialog.YcDialogLoading
@@ -149,6 +149,6 @@ abstract class YcBaseFragment<VB : ViewBinding>(private val createVB: ((LayoutIn
     }
 
     protected fun YcException.ycShowNetError(defaultMsg: String = "请求失败,错误msg为空") {
-        showToast(msg ?: defaultMsg)
+        ycShowToast(msg ?: defaultMsg)
     }
 }

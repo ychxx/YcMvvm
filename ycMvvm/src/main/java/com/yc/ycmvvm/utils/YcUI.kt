@@ -2,8 +2,11 @@ package com.yc.ycmvvm.utils
 
 import android.content.Context
 import android.content.res.Resources
+import android.os.Build
+import android.text.InputFilter.LengthFilter
 import android.util.DisplayMetrics
 import android.view.WindowManager
+import android.widget.EditText
 import com.yc.ycmvvm.config.YcInit
 
 /**
@@ -89,4 +92,15 @@ object YcUI {
         return displayMetrics
     }
 
+    @JvmStatic
+    fun getMaxLength(editText: EditText): Int {
+        var maxLength = 0
+        val filters = editText.filters
+        filters?.forEach {
+            if (it is LengthFilter) {
+                maxLength = it.max
+            }
+        }
+        return maxLength
+    }
 }

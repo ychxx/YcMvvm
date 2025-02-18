@@ -7,6 +7,9 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
@@ -95,27 +98,44 @@ inline fun Fragment.ycCreateResultLauncher(
     }
 }
 
-fun Activity.showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
-    if (this.isFinishing) {
+fun Activity?.ycShowToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
+    if (this == null || this.isFinishing) {
         return
     } else {
-        (this as Context).showToast(msg, duration)
+        (this as Context).ycShowToast(msg, duration)
     }
 }
 
-fun FragmentActivity.showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
-    if (this.isFinishing) {
+fun FragmentActivity?.ycShowToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
+    if (this == null || this.isFinishing) {
         return
     } else {
-        (this as Context).showToast(msg, duration)
+        (this as Context).ycShowToast(msg, duration)
     }
 }
 
-fun Fragment.showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
-    if (this.isDetached) {
+fun Fragment?.ycShowToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
+    if (this == null || this.isDetached) {
         return
+    } else {
+        this.requireContext().ycShowToast(msg, duration)
     }
-    requireContext().showToast(msg, duration)
+}
+
+fun Context?.ycShowToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
+    if (this != null) {
+        if (Looper.getMainLooper() == Looper.myLooper()) {
+            Toast.makeText(this, msg, duration).show()
+        } else {
+            try {
+                Handler(Looper.getMainLooper()).post {
+                    Toast.makeText(this, msg, duration).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 }
 
 /**
@@ -226,9 +246,6 @@ fun View.ycDpToPx(dp: Float): Int {
     return (resources.displayMetrics.density * dp + 0.5f).toInt()
 }
 
-fun Context.showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, msg, duration).show()
-}
 
 /**
  * 等同于getDimension()得到值进行四舍五入
@@ -259,6 +276,10 @@ fun TextView.ycSetTextSize(textSize: Float) {
 
 fun TextView.ycSetTextColorRes(@ColorRes textColorRes: Int) {
     this.setTextColor(context.resources.getColor(textColorRes))
+}
+
+fun TextView.ycVisibility(hasVisibility: Boolean) {
+    this.visibility = if (hasVisibility) View.VISIBLE else View.GONE
 }
 
 fun Button.ycSetTextColorRes(@ColorRes textColorRes: Int) {

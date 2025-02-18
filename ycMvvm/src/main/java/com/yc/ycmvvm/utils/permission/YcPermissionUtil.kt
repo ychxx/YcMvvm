@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.XXPermissions
-import com.yc.ycmvvm.config.YcActivityManager
+import com.yc.ycmvvm.utils.YcActivityManager
 import com.yc.ycmvvm.config.YcInit
 import com.yc.ycmvvm.extension.ycLogE
 import com.yc.ycmvvm.view.dialog.YcIDialog
