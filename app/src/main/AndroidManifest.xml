@@ -2,6 +2,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+    <!-- 照相权限 -->
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- 照相权限 -->
+
+    <!-- 存储权限 开始-->
+    <!--不能添加android:maxSdkVersion="29" XXPermission库会报错-->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <!--不能添加android:maxSdkVersion="32" XXPermission库会报错-->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <!-- 仅当您的应用程序需要访问其他应用程序创建的图像或照片时才需要。 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <!-- 仅当您的应用程序需要访问其他应用程序创建的视频时才需要 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <!-- 处理 Android 14+ 的 Selected Photos Access -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+    <!-- 仅当您的应用程序需要访问其他应用程序创建的音频文件时才需要 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <!-- 存储权限  结束-->
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -22,7 +48,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.InputBoxAc"/>
+        <activity android:name=".ui.TestCameraXAc" />
+        <activity android:name=".ui.InputBoxAc" />
+
+<!--        <provider-->
+<!--            android:name=".utils.YcCameraXProvider"-->
+<!--            android:authorities="${applicationId}.camera-provider"-->
+<!--            android:exported="false" />-->
     </application>
 
 </manifest>

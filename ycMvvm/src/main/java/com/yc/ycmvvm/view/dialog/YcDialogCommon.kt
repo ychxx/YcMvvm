@@ -45,7 +45,7 @@ class YcDialogCommon @JvmOverloads constructor(
 
         //设置对话框位置大小
         val dialogWindow = window
-        dialogWindow!!.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL)
+        dialogWindow!!.setGravity(Gravity.CENTER)
         dialogWindow.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
         val lp = dialogWindow.attributes
         dialogWindow.attributes = lp //此处暂未设置偏移量

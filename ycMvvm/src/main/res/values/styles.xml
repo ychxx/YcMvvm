@@ -10,8 +10,6 @@
         <item name="android:windowIsTranslucent">false</item><!--半透明-->
         <item name="android:windowNoTitle">true</item><!--无标题-->
         <item name="android:windowBackground">@color/yc_transparent</item><!--背景透明-->
-        <item name="android:backgroundDimEnabled">true</item><!--模糊-->
-        <item name="android:backgroundDimAmount">0.3</item> <!-- 设置背景模糊的透明度-->
     </style>
 
     <style name="YcPlateNumFrameBtnBase">

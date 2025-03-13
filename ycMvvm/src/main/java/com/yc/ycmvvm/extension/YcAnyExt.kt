@@ -7,6 +7,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.math.RoundingMode
+import java.nio.ByteBuffer
 import java.text.DecimalFormat
 import java.util.*
 
@@ -293,6 +294,13 @@ fun Boolean?.ycToVisibleOrGoneWhenFalse(): Int {
         View.VISIBLE
     } else {
         View.GONE
+    }
+}
+
+fun ByteBuffer.toByteArray(): ByteArray {
+    rewind()
+    return ByteArray(remaining()).also {
+        get(it)
     }
 }
 

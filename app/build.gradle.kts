@@ -46,4 +46,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.androidx.camera.camera.core)
+    implementation(libs.androidx.camera.camera.camera2)
+    implementation(libs.androidx.camera.camera.lifecycle)
+    implementation(libs.androidx.camera.camera.video)
+    implementation(libs.androidx.camera.camera.view)
+    implementation(libs.androidx.camera.camera.extensions)
+
+    implementation ("com.github.HyperInspire:hyperlpr3-android-sdk:1.0.3")
 }
