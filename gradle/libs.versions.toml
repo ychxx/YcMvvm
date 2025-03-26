@@ -20,6 +20,7 @@ smartRefreshLayout = "3.0.0-alpha"
 retrofitMock = "2.11.0"
 xlogVersion = "1.10.1"
 xxpermissions = "18.5"
+media3Ui = "1.5.1"
 
 [libraries]
 androidx-camera-camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "androidxCameraCore" }
@@ -50,6 +51,7 @@ squareup-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = 
 squareup-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofitMock" }
 squareup-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofitMock" }
 xxpermissions = { module = "com.github.getActivity:XXPermissions", version.ref = "xxpermissions" }
+androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3Ui" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

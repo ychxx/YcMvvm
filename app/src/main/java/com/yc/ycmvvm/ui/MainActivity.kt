@@ -21,6 +21,7 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
         rv.adapter = adapter
         adapter.addData("测试输入框")
         adapter.addData("测试CameraX")
+        adapter.addData("测试视频播放")
         adapter.mItemClick = {
             when (it) {
                 "测试输入框" -> {
@@ -29,6 +30,9 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
 
                 "测试CameraX" -> {
                     TestCameraXAc.toAc(this@MainActivity)
+                }
+                "测试视频播放" -> {
+                    TestVideoXAc.toAc(this@MainActivity)
                 }
 
             }

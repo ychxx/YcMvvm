@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- 照相权限 -->
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -50,6 +51,7 @@
         </activity>
         <activity android:name=".ui.TestCameraXAc" />
         <activity android:name=".ui.InputBoxAc" />
+        <activity android:name=".ui.TestVideoXAc" />
 
 <!--        <provider-->
 <!--            android:name=".utils.YcCameraXProvider"-->

@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.yc.ycmvvm"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.yc.ycmvvm"
@@ -43,6 +43,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(project(":ycMvvm"))
+    implementation(libs.androidx.media3.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -55,4 +56,15 @@ dependencies {
     implementation(libs.androidx.camera.camera.extensions)
 
     implementation ("com.github.HyperInspire:hyperlpr3-android-sdk:1.0.3")
+
+    val media3_version = "1.5.1"
+
+    // For media playback using ExoPlayer
+    implementation("androidx.media3:media3-exoplayer:$media3_version")
+    // For building media playback UIs
+    implementation("androidx.media3:media3-ui:$media3_version")
+    // Common Kotlin-specific functionality
+    implementation("androidx.media3:media3-common-ktx:$media3_version")
+    // Common functionality for reading and writing media containers
+    implementation("androidx.media3:media3-container:$media3_version")
 }
