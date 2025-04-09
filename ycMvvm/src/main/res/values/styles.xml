@@ -11,4 +11,9 @@
         <item name="android:windowNoTitle">true</item><!--无标题-->
         <item name="android:windowBackground">@color/yc_transparent</item><!--背景透明-->
     </style>
+    <style name="YcLineStyle">
+        <item name="android:background">#EFEFEF</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
 </resources>

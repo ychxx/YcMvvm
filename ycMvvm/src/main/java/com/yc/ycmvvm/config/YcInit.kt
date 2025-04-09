@@ -10,9 +10,13 @@ import com.elvishew.xlog.XLog
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.yc.ycmvvm.utils.release.YcSpecialViewConfigureImp
 import com.yc.ycmvvm.R
+import com.yc.ycmvvm.data.constans.YcNetErrorCode
 import com.yc.ycmvvm.exception.YcException
 import com.yc.ycmvvm.extension.YcLogExt
+import com.yc.ycmvvm.utils.release.YcSpecialState
+import com.yc.ycmvvm.utils.release.YcSpecialViewConfigureBase
 import com.yc.ycmvvm.view.dialog.YcDialogCommon
 import com.yc.ycmvvm.view.dialog.YcIDialog
 
@@ -71,46 +75,46 @@ class YcInit private constructor() {
      */
     var mDefaultBaseUrl = ""
 
-    //    /**
-//     * 创建一个替换布局（用于不一致时变换）
-//     */
-//    var mCreateSpecialViewBuildBase: ((context: Context) -> YcSpecialViewConfigureBase) = {
-//        YcSpecialViewConfigureImp(it)
-//    }
-//
-//    /**
-//     * 默认申请权限时，展示的对话框
-//     */
+        /**
+     * 创建一个替换布局（用于不一致时变换）
+     */
+    var mCreateSpecialViewBuildBase: ((context: Context) -> YcSpecialViewConfigureBase) = {
+        YcSpecialViewConfigureImp(it)
+    }
+
+    /**
+     * 默认申请权限时，展示的对话框
+     */
     var mDefaultPermissionDialog: ((context: Context, lifecycleOwner: LifecycleOwner) -> YcIDialog<*>?) = { context, lifecycleOwner ->
         YcDialogCommon(context, lifecycleOwner)
     }
-//
-//    /**
-//     * 请求异常转替换布局状态
-//     */
-//    var mYcExceptionToSpecialState: (YcException) -> Int = {
-//        when (it.knownCode) {
-//            YcNetErrorCode.TIME_OUT_ERROR, YcNetErrorCode.NETWORK_NO -> {
-//                YcSpecialState.NETWORK_NO
-//            }
-//
-//            YcNetErrorCode.DATE_NULL -> {
-//                YcSpecialState.DATA_EMPTY
-//            }
-//
-//            YcNetErrorCode.DATE_NULL_ERROR -> {
-//                YcSpecialState.DATA_EMPTY_ERROR
-//            }
-//
-//            YcNetErrorCode.JSON_ERROR, YcNetErrorCode.UN_KNOWN_ERROR, YcNetErrorCode.REQUEST_NULL -> {
-//                YcSpecialState.NETWORK_ERROR
-//            }
-//
-//            else -> {
-//                YcSpecialState.NETWORK_ERROR
-//            }
-//        }
-//    }
+
+    /**
+     * 请求异常转替换布局状态
+     */
+    var mYcExceptionToSpecialState: (YcException) -> Int = {
+        when (it.knownCode) {
+            YcNetErrorCode.TIME_OUT_ERROR, YcNetErrorCode.NETWORK_NO -> {
+                YcSpecialState.NETWORK_NO
+            }
+
+            YcNetErrorCode.DATE_NULL -> {
+                YcSpecialState.DATA_EMPTY
+            }
+
+            YcNetErrorCode.DATE_NULL_ERROR -> {
+                YcSpecialState.DATA_EMPTY_ERROR
+            }
+
+            YcNetErrorCode.JSON_ERROR, YcNetErrorCode.UN_KNOWN_ERROR, YcNetErrorCode.REQUEST_NULL -> {
+                YcSpecialState.NETWORK_ERROR
+            }
+
+            else -> {
+                YcSpecialState.NETWORK_ERROR
+            }
+        }
+    }
 
     /**
      * 异常时会调用该方法（暂时只要网络请求出现异常时调用）

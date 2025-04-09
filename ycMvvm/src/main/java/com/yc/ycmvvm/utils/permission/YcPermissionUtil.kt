@@ -100,10 +100,12 @@ open class YcPermissionUtil {
             show()
         }
     }
+
     /**
      * 申请开始回调
      */
     var mStartCall: (() -> Unit)? = null
+    var mHasDenied: Boolean = false
 
     /**
      * 开始申请权限
@@ -111,6 +113,7 @@ open class YcPermissionUtil {
      * 注：在onCreate之后的生命周期里调用
      */
     open fun start() {
+        mHasDenied = false
         mStartCall?.invoke()
         mXXRequestPermission.hasSuccess = mXXRequestPermission.permission.isEmpty() ||
                 XXPermissions.isGranted(context, mXXRequestPermission.permission)
@@ -130,11 +133,13 @@ open class YcPermissionUtil {
                                 start()
                             }
                         } else {
-                            mFailCall.invoke(permissions)
+                            if (!mHasDenied)
+                                mFailCall.invoke(permissions)
                         }
                     }
 
                     override fun onDenied(permissions: MutableList<String>, doNotAskAgain: Boolean) {
+                        mHasDenied = true
                         if (doNotAskAgain) {
                             mNeverAskAgainCall.invoke(permissions)
                         } else {
@@ -156,11 +161,13 @@ open class YcPermissionUtil {
                                 start()
                             }
                         } else {
-                            mFailCall.invoke(permissions)
+                            if (!mHasDenied)
+                                mFailCall.invoke(permissions)
                         }
                     }
 
                     override fun onDenied(permissions: MutableList<String>, doNotAskAgain: Boolean) {
+                        mHasDenied = true
                         if (doNotAskAgain) {
                             mNeverAskAgainCall.invoke(permissions)
                         } else {
