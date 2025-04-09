@@ -63,10 +63,10 @@ abstract class YcBaseFragment<VB : ViewBinding>(private val createVB: ((LayoutIn
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView(view, savedInstanceState)
+        mViewBinding.initView(view, savedInstanceState)
     }
 
-    protected abstract fun initView(view: View, savedInstanceState: Bundle?)
+    protected abstract fun VB.initView(view: View, savedInstanceState: Bundle?)
 
     /**
      * 用于懒加载（只执行一次）

@@ -1,7 +1,10 @@
 package com.yc.ycmvvm.net
 
 import com.yc.ycmvvm.config.YcInit
+import com.yc.ycmvvm.data.constans.YcNetErrorCode
+import com.yc.ycmvvm.exception.YcNetException
 import com.yc.ycmvvm.extension.ycLogE
+import com.yc.ycmvvm.utils.YcPhoneUtils
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okio.Buffer
@@ -19,6 +22,9 @@ class YcInterceptorLog : Interceptor {
     private val UTF8 = Charset.forName("UTF-8")
 
     override fun intercept(chain: Interceptor.Chain): Response {
+        if (YcPhoneUtils.hasNetwork()) {
+            throw YcNetException("网络不可用", YcNetErrorCode.NETWORK_NO)
+        }
         var request: Request = chain.request()
         val realBaseUrl = getRealBaseUrl(request)
         realBaseUrl?.apply {

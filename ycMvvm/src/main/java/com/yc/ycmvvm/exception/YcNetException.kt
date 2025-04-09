@@ -6,7 +6,7 @@ import java.io.IOException
 /**
  *  网络请求异常类
  */
-public open class YcIoException : IOException {
+public open class YcNetException : IOException {
     var code: Int
     var msg: String? = null
         get() {

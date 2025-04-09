@@ -1,5 +1,6 @@
 package com.yc.ycmvvm.ui
 
+import android.os.Bundle
 import com.yc.ycmvvm.adapter.YcRecyclerViewAdapter
 import com.yc.ycmvvm.base.YcBaseActivity
 import com.yc.ycmvvm.databinding.MainAcBinding
@@ -16,7 +17,7 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
         }
     }
 
-    override fun MainAcBinding.initView() {
+    override fun MainAcBinding.initView(savedInstanceState: Bundle?) {
         rv.ycInitLinearLayoutManage()
         rv.adapter = adapter
         adapter.addData("测试输入框")

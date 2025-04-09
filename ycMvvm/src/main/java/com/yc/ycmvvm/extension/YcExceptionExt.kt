@@ -3,7 +3,7 @@ package com.yc.ycmvvm.extension
 import android.net.ParseException
 import com.google.gson.JsonParseException
 import com.google.gson.stream.MalformedJsonException
-import com.yc.ycmvvm.exception.YcIoException
+import com.yc.ycmvvm.exception.YcNetException
 import com.yc.ycmvvm.data.constans.YcNetErrorCode
 import com.yc.ycmvvm.exception.YcException
 import org.json.JSONException
@@ -18,7 +18,7 @@ import java.net.SocketTimeoutException
 fun Throwable.toYcException(): YcException {
     return when (this) {
         is YcException -> this
-        is YcIoException -> YcException(msg, code)
+        is YcNetException -> YcException(msg, code)
         is JsonParseException -> YcException("接口解析出错", YcNetErrorCode.JSON_ERROR)
         is JSONException -> YcException("接口解析出错", YcNetErrorCode.JSON_ERROR)
         is ParseException -> YcException("接口解析出错", YcNetErrorCode.JSON_ERROR)

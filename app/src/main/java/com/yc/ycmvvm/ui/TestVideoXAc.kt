@@ -2,6 +2,7 @@ package com.yc.ycmvvm.ui
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import androidx.annotation.OptIn
 import androidx.camera.core.ExperimentalGetImage
 import androidx.media3.common.MediaItem
@@ -23,9 +24,9 @@ class TestVideoXAc : YcBaseActivity<VideoAcBinding>(VideoAcBinding::inflate) {
 
 
     @OptIn(ExperimentalGetImage::class)
-    override fun VideoAcBinding.initView() {
+    override fun VideoAcBinding.initView(savedInstanceState: Bundle?) {
         changeBtn.setOnClickListener {
-            playerView.start(0f, 0.5f, 0.5f, 1f, 1920f/1080, netUrl)
+            playerView.start(0f, 0.0f, 0.1f, 0.1f, 1920f/1080, netUrl)
 
         }
     }

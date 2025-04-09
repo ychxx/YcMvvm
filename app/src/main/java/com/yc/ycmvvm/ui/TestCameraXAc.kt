@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.graphics.ImageFormat
 import android.graphics.Rect
 import android.graphics.YuvImage
+import android.os.Bundle
 import androidx.annotation.OptIn
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
@@ -50,7 +51,7 @@ class TestCameraXAc : YcBaseActivity<CameraxAcBinding>(CameraxAcBinding::inflate
     lateinit var preview: Preview
 
     @OptIn(ExperimentalGetImage::class)
-    override fun CameraxAcBinding.initView() {
+    override fun CameraxAcBinding.initView(savedInstanceState: Bundle?) {
 //        val cameraController = LifecycleCameraController(baseContext)
 //        cameraController.bindToLifecycle(this@TestCameraXAc)
 //        mViewBinding.cameraPv.controller = cameraController

@@ -36,7 +36,7 @@ abstract class YcBaseActivity<VB : ViewBinding>(private val createVB: ((LayoutIn
         if (createVB != null) {
             mViewBinding = createVB.invoke(LayoutInflater.from(this as Context))
             setContentView(mViewBinding.root)
-            mViewBinding.initView()
+            mViewBinding.initView(savedInstanceState)
         }
         YcActivityManager.addActivity(this)
     }
@@ -45,7 +45,7 @@ abstract class YcBaseActivity<VB : ViewBinding>(private val createVB: ((LayoutIn
         return this
     }
 
-    abstract fun VB.initView()
+    abstract fun VB.initView(savedInstanceState: Bundle?)
 
     @MainThread
     protected inline fun <reified VM : YcBaseViewModel> ComponentActivity.ycViewModels(): Lazy<VM> {

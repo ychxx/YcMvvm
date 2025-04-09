@@ -2,6 +2,7 @@ package com.yc.ycmvvm.ui
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import com.yc.ycmvvm.base.YcBaseActivity
 import com.yc.ycmvvm.databinding.InputBoxAcBinding
 
@@ -12,6 +13,7 @@ class InputBoxAc : YcBaseActivity<InputBoxAcBinding>(InputBoxAcBinding::inflate)
         }
     }
 
-    override fun InputBoxAcBinding.initView() {
+    override fun InputBoxAcBinding.initView(savedInstanceState: Bundle?) {
+
     }
 }

@@ -9,7 +9,6 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
-import android.os.Message
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
@@ -141,29 +140,29 @@ fun Context?.ycShowToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
 /**
  * 点击非EditText位置，隐藏输入法
  */
-fun Activity.touchOutsideHideSoftInput(event: MotionEvent) {
+fun Activity.ycTouchOutsideHideSoftInput(event: MotionEvent) {
     YcSoftInputUtil.clickNoEditHideSoftInput(currentFocus, event)
 }
 
 /**
  * 隐藏输入法
  */
-fun View.hideSoftInput() {
+fun View.ycHideSoftInput() {
     YcSoftInputUtil.hideSoftInput(context, windowToken)
 }
 
 /**
  * 隐藏输入法
  */
-fun Activity.hideSoftInput() {
-    window.peekDecorView()?.hideSoftInput()
+fun Activity.ycHideSoftInput() {
+    window.peekDecorView()?.ycHideSoftInput()
 }
 
 /**
  * 隐藏输入法
  */
-fun Fragment.hideSoftInput() {
-    view?.hideSoftInput()
+fun Fragment.ycHideSoftInput() {
+    view?.ycHideSoftInput()
 }
 
 @ColorInt
@@ -610,10 +609,19 @@ fun ImageView.ycLoadGridImage(
         .into(this)
 }
 
-fun Context.pauseRequests() {
-    Glide.with(this).pauseRequests()
+
+fun View?.ycSetVisible(visibleOrGone: Boolean? = true) {
+    if (visibleOrGone == true)
+        this?.visibility = View.VISIBLE
+    else {
+        this?.ycSetGone()
+    }
 }
 
-fun Context.resumeRequests() {
-    Glide.with(this).resumeRequests()
+fun View?.ycSetGone() {
+    this?.visibility = View.GONE
+}
+
+fun View?.ycSetInvisible() {
+    this?.visibility = View.INVISIBLE
 }

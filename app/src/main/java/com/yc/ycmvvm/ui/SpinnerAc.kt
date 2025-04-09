@@ -2,6 +2,7 @@ package com.yc.ycmvvm.ui
 
 
 import android.graphics.Color
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -11,7 +12,7 @@ import com.yc.ycmvvm.databinding.SpinnerAcBinding
 import com.yc.ycmvvm.extension.ycLogE
 
 class SpinnerAc : YcBaseActivity<SpinnerAcBinding>(SpinnerAcBinding::inflate) {
-    override fun SpinnerAcBinding.initView() {
+    override fun SpinnerAcBinding.initView(savedInstanceState: Bundle?) {
         val adapter =object :ArrayAdapter<String>(this@SpinnerAc, android.R.layout.simple_spinner_item){
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = super.getView(position, convertView, parent)
