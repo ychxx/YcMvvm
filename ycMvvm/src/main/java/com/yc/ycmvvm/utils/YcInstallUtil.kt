@@ -35,9 +35,9 @@ class YcInstallUtil(val activity: FragmentActivity) {
     /**
      * 用户点击“拒绝"回调
      */
-    var mFailCall: (() -> Unit) = {
+    var mFailCall: ((errorMsg: String) -> Unit) = {
         mFragmentDialog.apply {
-            setMsg("安装失败")
+            setMsg(it)
             setLeftBtnText("退出")
             setOnLeftClick {
                 activity.finish()
@@ -56,7 +56,7 @@ class YcInstallUtil(val activity: FragmentActivity) {
         if (mInstallRegister == null) {
             mInstallRegister = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode != Activity.RESULT_OK) { //安装apk失败
-                    mFailCall.invoke()
+                    mFailCall.invoke("安装apk失败")
                 }
             }
         }
@@ -83,8 +83,8 @@ class YcInstallUtil(val activity: FragmentActivity) {
                 data = FileProvider.getUriForFile(activity, "${YcVersionUtil.getPackageName(activity)}.fileprovider", mApkFile!!)
                 // 给目标应用一个临时授权
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             } else {
                 data = Uri.fromFile(mApkFile)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -93,7 +93,8 @@ class YcInstallUtil(val activity: FragmentActivity) {
             mInstallRegister!!.launch(intent)
         } else {
             Log.e("YcInstallUtil", "安装失败：mApkFile文件为空!!!!")
-            throw Throwable("安装失败：mApkFile文件为空!!!!")
+//            throw Throwable("安装失败：mApkFile文件为空!!!!")
+            mFailCall.invoke("安装apk失败，apk文件不存在")
         }
     }
 }

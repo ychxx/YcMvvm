@@ -23,7 +23,7 @@ class YcMaskView : View {
             strokeWidth = 10f
         }
     }
-    var mBgColor: Int = Color.parseColor("#DCAF50FF")
+    var mBgColor: Int = Color.parseColor("#6CAF50FF")
         set(value) {
             field = value
             mPaint.color = value

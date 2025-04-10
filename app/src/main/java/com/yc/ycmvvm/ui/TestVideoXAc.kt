@@ -22,12 +22,13 @@ class TestVideoXAc : YcBaseActivity<VideoAcBinding>(VideoAcBinding::inflate) {
     val netUrl =
         "https://cdn.iscreator.com/aisport3/helpDocument/sportPreviewVideo/%E4%BB%B0%E5%8D%A7%E8%B5%B7%E5%9D%90%E7%A4%BA%E8%8C%83%E8%A7%86%E9%A2%91.mp4"
 
-
     @OptIn(ExperimentalGetImage::class)
     override fun VideoAcBinding.initView(savedInstanceState: Bundle?) {
         changeBtn.setOnClickListener {
-            playerView.start(0f, 0.0f, 0.1f, 0.1f, 1920f/1080, netUrl)
-
+            playerView.start(0f, 0.0f, 0.5f, 0.5f, 1920f/1080, netUrl)
+        }
+        changeBtn2.setOnClickListener {
+            playerView.start(0.5f, 0.5f, 1f, 1f, 1920f/1080, netUrl)
         }
     }
 

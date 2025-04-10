@@ -117,13 +117,17 @@ class YcVideoView : FrameLayout {
         playView(netUrl)
         mPlaySuccessCall = {
             mViewBinding.playerView.post {
-                mViewBinding.playerView.animate()
-                    .translationX(translationX)
-                    .translationY(translationY)
-                    .scaleX(scaleEnlarge)
-                    .scaleY(scaleEnlarge)
-                    .setDuration(10)
-                    .start()
+                mViewBinding.playerView.translationX = translationX
+                mViewBinding.playerView.translationY = translationY
+                mViewBinding.playerView.scaleX = scaleEnlarge
+                mViewBinding.playerView.scaleY = scaleEnlarge
+//                mViewBinding.playerView.animate()
+//                    .translationX(translationX)
+//                    .translationY(translationY)
+//                    .scaleX(scaleEnlarge)
+//                    .scaleY(scaleEnlarge)
+//                    .setDuration(10)
+//                    .start()
                 mViewBinding.maskV.setMask(scaleEnlarge * videoPartW, scaleEnlarge * videoPartH)
             }
         }

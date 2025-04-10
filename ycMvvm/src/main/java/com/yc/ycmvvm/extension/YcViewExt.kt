@@ -277,9 +277,6 @@ fun TextView.ycSetTextColorRes(@ColorRes textColorRes: Int) {
     this.setTextColor(context.resources.getColor(textColorRes))
 }
 
-fun TextView.ycVisibility(hasVisibility: Boolean) {
-    this.visibility = if (hasVisibility) View.VISIBLE else View.GONE
-}
 
 fun Button.ycSetTextColorRes(@ColorRes textColorRes: Int) {
     this.setTextColor(context.resources.getColor(textColorRes))
@@ -612,7 +609,7 @@ fun ImageView.ycLoadGridImage(
 
 fun View?.ycSetVisible(visibleOrGone: Boolean? = true) {
     if (visibleOrGone == true)
-        this?.visibility = View.VISIBLE
+        this?.ycSetVisible()
     else {
         this?.ycSetGone()
     }
@@ -620,6 +617,10 @@ fun View?.ycSetVisible(visibleOrGone: Boolean? = true) {
 
 fun View?.ycSetGone() {
     this?.visibility = View.GONE
+}
+
+fun View?.ycSetVisible() {
+    this?.visibility = View.VISIBLE
 }
 
 fun View?.ycSetInvisible() {
