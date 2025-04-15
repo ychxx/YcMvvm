@@ -106,7 +106,7 @@ class YcInit private constructor() {
                 YcSpecialState.DATA_EMPTY_ERROR
             }
 
-            YcNetErrorCode.JSON_ERROR, YcNetErrorCode.UN_KNOWN_ERROR, YcNetErrorCode.REQUEST_NULL -> {
+            YcNetErrorCode.JSON_ERROR, YcNetErrorCode.UN_KNOWN_ERROR, YcNetErrorCode.REQUEST_ERROR -> {
                 YcSpecialState.NETWORK_ERROR
             }
 

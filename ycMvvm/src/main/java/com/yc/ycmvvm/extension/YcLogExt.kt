@@ -10,31 +10,31 @@ object YcLogExt {
     var mIsShowLogger: Boolean = true
 }
 
-fun ycLogESimple(msg: String? = "", tag: String = "log") {
+fun ycLogESimple(msg: String? = "", tag: String = "ycLog") {
     if (YcLogExt.mIsShowLogger) {
-        Log.e(tag, msg.orEmpty())
+        Log.e(tag, msg.ycToNoEmpty())
     }
 }
 
 fun ycLogE(msg: String? = "") {
     if (YcLogExt.mIsShowLogger) {
-        XLog.e(msg.orEmpty())
+        XLog.e(msg.ycToNoEmpty())
     }
 }
 
-fun ycLogDSimple(msg: String? = "", tag: String = "log") {
+fun ycLogDSimple(msg: String? = "", tag: String = "ycLog") {
     if (YcLogExt.mIsShowLogger) {
-        Log.d(tag, msg.orEmpty())
+        Log.d(tag, msg.ycToNoEmpty())
     }
 }
 
 fun ycLogD(msg: String? = "") {
     if (YcLogExt.mIsShowLogger) {
-        XLog.d(msg.orEmpty())
+        XLog.d(msg.ycToNoEmpty())
     }
 }
 
-fun ycLogEJson(json: String? = "") {
+fun ycLogJson(json: String? = "") {
     if (YcLogExt.mIsShowLogger) {
         XLog.json(json)
     }

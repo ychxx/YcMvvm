@@ -1,4 +1,5 @@
 package com.yc.ycmvvm.data.constans
+
 /**
  *
  */
@@ -31,11 +32,17 @@ object YcNetErrorCode {
     /**
      * 数据为空错误，用于请求的数据不能为空接口判断
      */
-    const val DATE_NULL_ERROR = 1007
-
+    const val DATE_NULL_ERROR = 1006
 
     /**
-     * 请求错误
+     * 返回参数错误
      */
-    const val REQUEST_NULL = 1006
+    const val DATA_ERROR = 1007
+
+    /**
+     * 请求参数错误
+     */
+    const val REQUEST_ERROR = 1008
+
+
 }

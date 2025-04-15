@@ -63,10 +63,12 @@ dependencies {
 
     /**--okHttp-logging-interceptor 日志拦截器--**/
     api(libs.logging.interceptor)
-    implementation(libs.github.glide)
     implementation(libs.xxpermissions)
     /**-- Lifecycle components 生命周期管理--**/
     api(libs.androidx.lifecycle.lifecycle.viewmodel.ktx4)
+
+    /**--图片加载--**/
+        implementation(libs.github.glide)
 
     /**--json解析--**/
     api(libs.google.gson)

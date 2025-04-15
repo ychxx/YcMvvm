@@ -1,5 +1,6 @@
 package com.yc.ycmvvm.net
 
+import android.annotation.SuppressLint
 import com.yc.ycmvvm.config.YcInit
 import com.yc.ycmvvm.data.constans.YcNetErrorCode
 import com.yc.ycmvvm.exception.YcNetException
@@ -21,8 +22,9 @@ import java.nio.charset.UnsupportedCharsetException
 class YcInterceptorLog : Interceptor {
     private val UTF8 = Charset.forName("UTF-8")
 
+    @SuppressLint("MissingPermission")
     override fun intercept(chain: Interceptor.Chain): Response {
-        if (YcPhoneUtils.hasNetwork()) {
+        if (!YcPhoneUtils.hasNetwork()) {
             throw YcNetException("网络不可用", YcNetErrorCode.NETWORK_NO)
         }
         var request: Request = chain.request()
