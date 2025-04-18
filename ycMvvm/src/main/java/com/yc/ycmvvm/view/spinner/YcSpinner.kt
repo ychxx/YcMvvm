@@ -6,7 +6,7 @@ import android.view.KeyEvent
 import androidx.appcompat.widget.AppCompatSpinner
 import com.yc.ycmvvm.adapter.YcSpinnerAdapter
 
-class YcSpinner @JvmOverloads constructor(
+open class YcSpinner @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : AppCompatSpinner(context, attrs) {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
