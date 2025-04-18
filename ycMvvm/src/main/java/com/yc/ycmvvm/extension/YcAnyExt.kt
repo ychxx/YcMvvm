@@ -48,7 +48,11 @@ fun String?.ycToNoEmptyHasUnit(unit: String, defaultData: String = YcAnyExt.mCom
         this + unit
     }
 }
-
+fun String?.ycToInt(): Int? = ycTryReturnData(block = {
+    return@ycTryReturnData this?.toIntOrNull()
+}, error = {
+    return@ycTryReturnData null
+})
 /**
  * 转成Double类型，格式错误返回空
  */

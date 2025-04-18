@@ -78,4 +78,12 @@ object YcActivityManager {
     fun finishCurrentActivity() {
         mActivityStack.removeLastOrNull()?.finish()
     }
+
+    /**
+     * 是否存在 activity
+     */
+    @JvmStatic
+    fun <T> hasExist(activityClass: Class<T>): Boolean {
+        return mActivityStack.any { it.javaClass == activityClass }
+    }
 }

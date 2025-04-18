@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -300,6 +301,10 @@ fun ImageView.ycSetColorFilter(@ColorRes colorRes: Int) {
 
 fun RecyclerView.ycInitLinearLayoutManage(orientation: Int = RecyclerView.VERTICAL) {
     this.layoutManager = LinearLayoutManager(context, orientation, false)
+}
+
+fun RecyclerView.ycInitGridLayoutManage(spanCount: Int = 2) {
+    this.layoutManager = GridLayoutManager(context, spanCount)
 }
 
 /**

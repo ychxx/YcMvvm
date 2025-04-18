@@ -4,13 +4,13 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 class YcRefreshUtil(
     private val mSmartRefreshLayout: SmartRefreshLayout,
-    private val mPageIndexDefault: Int = 10,
-    private val mPageSizeDefault: Int = 1,
+    private val mPageIndexDefault: Int = 1,
+    private val mPageSizeDefault: Int = 10,
     private val hasRefresh: Boolean = true,
     private val hasMore: Boolean = true,
 ) {
-    var mPageIndex: Int = 10
-    var mPageSize: Int = 1
+    var mPageIndex: Int = 1
+    var mPageSize: Int = 10
     var mPageSum: Int? = null
     fun reset() {
         mPageIndex = mPageIndexDefault

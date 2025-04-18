@@ -18,7 +18,7 @@ class YcActivityResult {
     constructor(
         activity: FragmentActivity,
         call: (YcFileTempBean, flag: String) -> Unit,
-        saveFile: YcFileTempBean = YcFileTempBean.create("temp", "jpg")
+        saveFile: YcFileTempBean = YcFileTempBean.create("temp", ".jpg")
     ) {
         mPermissionUtil = YcPermissionUtil(activity)
         mTakePictureUri = saveFile
@@ -32,7 +32,7 @@ class YcActivityResult {
     constructor(
         fragment: Fragment,
         call: (YcFileTempBean, flag: String) -> Unit,
-        saveFile: YcFileTempBean = YcFileTempBean.create("temp", "jpg")
+        saveFile: YcFileTempBean = YcFileTempBean.create("temp", ".jpg")
     ) {
         mPermissionUtil = YcPermissionUtil(fragment)
         mTakePictureUri = saveFile

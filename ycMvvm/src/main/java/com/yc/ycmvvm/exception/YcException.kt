@@ -4,14 +4,14 @@ package com.yc.ycmvvm.exception
 /**
  *  网络请求异常类
  */
-public open class YcException : Exception {
-    var code: Int
+public open class YcException : Exception, IYcExceptionBase {
+   override var code: Int = 0
 
     /**
      * 已知异常，抛出异常时用
      */
     var knownCode: Int
-    var msg: String? = null
+    override var msg: String? = null
         get() {
             return if (field == null) {
                 ""

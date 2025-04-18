@@ -20,6 +20,7 @@ object YcTime {
     const val FORMAT_TIME_MONTH_DAY = "MM-dd"
     const val FORMAT_TIME_SECOND_WEEK = "yyyy-MM-dd E HH:mm:ss" //E代表星期，会根据时区显示中文或英文
     const val FORMAT_TIME_HOUR_MINUTE = "HH:mm"//只显示时分
+    const val FORMAT_TIME_HOUR_MINUTE_SECOND = "HH:mm:ss"//只显示时分秒
 
 
     @JvmStatic
