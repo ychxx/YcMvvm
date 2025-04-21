@@ -27,9 +27,9 @@ open class YcBaseViewModel : ViewModel() {
     protected open var mDefaultDelayTime = 1500L
 
 
-    protected inline fun <T> ycFlow(
-        crossinline block: suspend () -> T,
-        crossinline handle: (ex: Throwable) -> YcException? = { ex -> errHandle(ex) },
+    protected fun <T> ycFlow(
+        block: suspend () -> T,
+        handle: (ex: Throwable) -> YcException? = { ex -> errHandle(ex) },
         hasShowLoading: Boolean = true,
         hasAutoClose: Boolean = true
     ) =
