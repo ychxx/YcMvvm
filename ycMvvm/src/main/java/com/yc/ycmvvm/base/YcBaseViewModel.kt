@@ -48,11 +48,11 @@ open class YcBaseViewModel : ViewModel() {
             }
         }
 
-    open fun errHandle(ex: Throwable): YcException? {
+    protected open fun errHandle(ex: Throwable): YcException? {
         return ex.toYcException()
     }
 
-    suspend fun <T> Flow<YcResult<T>>.ycCollect(
+    protected suspend fun <T> Flow<YcResult<T>>.ycCollect(
         errHandle: (cause: Throwable) -> YcException? = this@YcBaseViewModel::errHandle,
         collector: FlowCollector<YcResult<T>>
     ) {
