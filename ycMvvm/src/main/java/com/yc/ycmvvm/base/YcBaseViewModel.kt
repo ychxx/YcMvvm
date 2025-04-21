@@ -29,7 +29,7 @@ open class YcBaseViewModel : ViewModel() {
 
     protected inline fun <T> ycFlow(
         crossinline block: suspend () -> T,
-        crossinline errHandle: (cause: Throwable) -> YcException? = this@YcBaseViewModel::errHandle,
+        crossinline handle: (ex: Throwable) -> YcException? = { ex -> errHandle(ex) },
         hasShowLoading: Boolean = true,
         hasAutoClose: Boolean = true
     ) =
@@ -42,28 +42,29 @@ open class YcBaseViewModel : ViewModel() {
             if (hasAutoClose) hideLoading()
         }.catch {
             it.printStackTrace()
-            val result = errHandle.invoke(it)
+            val result = handle.invoke(it)
             if (result != null) {
                 emit(YcResult.Fail(result))
             }
         }
 
-    protected open fun errHandle(ex: Throwable): YcException? {
-        return ex.toYcException()
-    }
-
     protected suspend fun <T> Flow<YcResult<T>>.ycCollect(
-        errHandle: (cause: Throwable) -> YcException? = this@YcBaseViewModel::errHandle,
+        handle: (cause: Throwable) -> YcException? = { ex -> errHandle(ex) },
         collector: FlowCollector<YcResult<T>>
     ) {
         this.catch {
             it.printStackTrace()
-            val result = errHandle.invoke(it)
+            val result = handle.invoke(it)
             if (result != null) {
                 emit(YcResult.Fail(result))
             }
         }.collect(collector)
     }
+
+    open fun errHandle(ex: Throwable): YcException? {
+        return ex.toYcException()
+    }
+
 
     protected inline fun ycLaunch(crossinline block: suspend (coroutineScope: CoroutineScope) -> Unit): Job {
         return viewModelScope.launch {
