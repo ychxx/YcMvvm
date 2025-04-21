@@ -5,6 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yc.ycmvvm.data.entity.YcLoadingBean
+import com.yc.ycmvvm.exception.YcException
+import com.yc.ycmvvm.extension.toYcException
+import com.yc.ycmvvm.net.YcResult
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -22,6 +25,46 @@ open class YcBaseViewModel : ViewModel() {
     protected var mLoadingJob: Job? = null
     protected var mLoadingShowJob: Job? = null
     protected open var mDefaultDelayTime = 1500L
+
+
+    protected inline fun <T> ycFlow(
+        crossinline block: suspend () -> T,
+        crossinline errHandle: (cause: Throwable) -> YcException? = this@YcBaseViewModel::errHandle,
+        hasShowLoading: Boolean = true,
+        hasAutoClose: Boolean = true
+    ) =
+        flow<YcResult<T>> {
+            val result = block.invoke()
+            emit(YcResult.Success(result))
+        }.onStart {
+            if (hasShowLoading) showLoading()
+        }.onCompletion {
+            if (hasAutoClose) hideLoading()
+        }.catch {
+            it.printStackTrace()
+            val result = errHandle.invoke(it)
+            if (result != null) {
+                emit(YcResult.Fail(result))
+            }
+        }
+
+    open fun errHandle(ex: Throwable): YcException? {
+        return ex.toYcException()
+    }
+
+    suspend fun <T> Flow<YcResult<T>>.ycCollect(
+        errHandle: (cause: Throwable) -> YcException? = this@YcBaseViewModel::errHandle,
+        collector: FlowCollector<YcResult<T>>
+    ) {
+        this.catch {
+            it.printStackTrace()
+            val result = errHandle.invoke(it)
+            if (result != null) {
+                emit(YcResult.Fail(result))
+            }
+        }.collect(collector)
+    }
+
     protected inline fun ycLaunch(crossinline block: suspend (coroutineScope: CoroutineScope) -> Unit): Job {
         return viewModelScope.launch {
             block(this)

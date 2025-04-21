@@ -2,6 +2,7 @@ package com.yc.ycmvvm.extension
 
 import android.net.ParseException
 import com.google.gson.JsonParseException
+import com.google.gson.JsonParser
 import com.google.gson.stream.MalformedJsonException
 import com.yc.ycmvvm.exception.YcNetException
 import com.yc.ycmvvm.data.constans.YcNetErrorCode
@@ -24,7 +25,17 @@ fun Throwable.toYcException(): YcException {
         is ParseException -> YcException("接口解析出错", YcNetErrorCode.JSON_ERROR)
         is MalformedJsonException -> YcException("接口解析出错", YcNetErrorCode.JSON_ERROR)
         is IllegalStateException -> YcException("接口解析出错", YcNetErrorCode.JSON_ERROR)
-        is HttpException -> YcException("网络请求错误", code())
+        is HttpException -> {
+            try {
+                val errBody = response()?.errorBody()?.string()
+                val jsonObject = JsonParser.parseString(errBody).asJsonObject
+                val code = jsonObject.get("code")?.asInt ?: YcNetErrorCode.DATA_ERROR
+                val msg = jsonObject.get("msg")?.asString ?: jsonObject.get("message")?.asString ?: "网络请求失败"
+                YcException(msg, code)
+            } catch (e: Exception) {
+                YcException("网络请求错误", code())
+            }
+        }
         is ConnectException -> YcException("连接失败", YcNetErrorCode.NETWORK_NO)
         is SocketTimeoutException -> YcException("网络超时", YcNetErrorCode.TIME_OUT_ERROR)
         is NullPointerException -> YcException("空异常", YcNetErrorCode.DATE_NULL_ERROR)
