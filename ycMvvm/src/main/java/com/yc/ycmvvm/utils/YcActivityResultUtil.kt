@@ -12,7 +12,7 @@ import com.yc.ycmvvm.extension.ycIsTrue
 import com.yc.ycmvvm.utils.permission.XXPermissionUtil
 import com.yc.ycmvvm.utils.permission.YcPermissionUtil
 
-class YcActivityResult {
+class YcActivityResultUtil {
 
     private var mPermissionUtil: YcPermissionUtil
 
@@ -54,8 +54,10 @@ class YcActivityResult {
     private var mTakePictureUri: YcFileTempBean? = null
     var flag: String = "0"
     var callTemp: ((hasSuccess: Boolean, YcFileTempBean, flag: String) -> Unit)? = null
-    fun launcherTakePicture(flag: String = "0", call: (hasSuccess: Boolean, YcFileTempBean, flag: String) -> Unit) {
-        callTemp = call
+    fun launcherTakePicture(flag: String = "0", call: ((hasSuccess: Boolean, YcFileTempBean, flag: String) -> Unit)? = null) {
+        if (call != null) {
+            callTemp = call
+        }
         this.flag = flag
         mPermissionUtil.mSuccessCall = {
             if (mTakePictureUri == null || mLauncherTakePicture == null) {
