@@ -53,6 +53,7 @@ object YcImageUtils {
                 }
 
                 override fun getSize(cb: SizeReadyCallback) {
+                    cb.onSizeReady(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 }
 
                 override fun removeCallback(cb: SizeReadyCallback) {
@@ -77,7 +78,7 @@ object YcImageUtils {
         imageUrl: String,
         saveFileName: String = "IMG_${System.currentTimeMillis()}.jpg",
         onSuccess: ((savePath: String) -> Unit)? = null,
-        onFail: ((error: String) -> Unit)?
+        onFail: ((error: String) -> Unit)? = null,
     ) {
         downloadImage(context, imageUrl, onSuccess = {
             val mimeType = getImageTypeWithMime(it.absolutePath)
