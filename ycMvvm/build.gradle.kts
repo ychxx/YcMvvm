@@ -68,7 +68,7 @@ dependencies {
     api(libs.androidx.lifecycle.lifecycle.viewmodel.ktx4)
 
     /**--图片加载--**/
-        implementation(libs.github.glide)
+    implementation(libs.github.glide)
 
     /**--json解析--**/
     api(libs.google.gson)
