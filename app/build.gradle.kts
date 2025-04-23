@@ -17,9 +17,25 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("releaseSignConfig") {
+            keyAlias = "1qaz2wsx"
+            keyPassword = "1qaz2wsx"
+            storeFile = file("1qaz2wsx.jks")
+            storePassword = "1qaz2wsx"
+            enableV1Signing = true
+            enableV2Signing = true
+        }
+    }
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("releaseSignConfig")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+
+        debug {
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
