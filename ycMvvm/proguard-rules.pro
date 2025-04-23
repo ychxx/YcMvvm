@@ -45,6 +45,7 @@
 
 # Keep ycmvvm
 -keep class com.yc.ycmvvm.**{*;}
+-keepclassmembers class com.yc.ycmvvm.**$* { *; }
 -keepclasseswithmembers class * {
     @com.yc.ycmvvm.annotation.* <fields>;
 }
