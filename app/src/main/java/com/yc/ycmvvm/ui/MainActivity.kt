@@ -34,6 +34,7 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
         adapter.addData("测试CameraX")
         adapter.addData("测试视频播放")
         adapter.addData("测试安装下载apk")
+        adapter.addData("测试选择器")
         adapter.mItemClick = {
             when (it) {
                 "测试输入框" -> {
@@ -49,11 +50,15 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
                 }
 
                 "测试安装下载apk" -> {
-                    val url  ="https://pub-parking.zrzkwlw.com/2025-04-22/5676d59b9a1158d63e591969fec90f01.apk"
+                    val url = "https://pub-parking.zrzkwlw.com/2025-04-22/5676d59b9a1158d63e591969fec90f01.apk"
                     YcDownload.createDownloadApkHasProgress(this@MainActivity, url, YcInit.mInstance.mDefaultSaveDirPath + "test.apk", {
                         mYcInstallUtil.mApkFile = it
                         mYcInstallUtil.installApk()
                     }, { ycShowToast(it.ycToNoEmpty("下载apk失败")) }).start()
+                }
+
+                "测试选择器" -> {
+                    TestPickerViewAc.toAc(this@MainActivity)
                 }
 
             }

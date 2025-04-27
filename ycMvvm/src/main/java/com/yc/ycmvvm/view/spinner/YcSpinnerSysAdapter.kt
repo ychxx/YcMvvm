@@ -1,4 +1,4 @@
-package com.yc.ycmvvm.adapter
+package com.yc.ycmvvm.view.spinner
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import android.widget.SpinnerAdapter
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.viewbinding.ViewBinding
 
-class YcSpinnerAdapter<Data : Any, VB : ViewBinding, VB2 : ViewBinding>(
+class YcSpinnerSysAdapter<Data : Any, VB : ViewBinding, VB2 : ViewBinding>(
     val vbSelect: (LayoutInflater, ViewGroup?, Boolean) -> VB,
     val vbDropDown: (LayoutInflater, ViewGroup?, Boolean) -> VB2
 ) : BaseAdapter(), SpinnerAdapter {
@@ -53,17 +53,16 @@ class YcSpinnerAdapter<Data : Any, VB : ViewBinding, VB2 : ViewBinding>(
     fun addAllData(data: List<Data>?, isClear: Boolean = true) {
         if (isClear) {
             mSelectIndex = 0
-            mSpinner?.setSelection(0)
             mData.clear()
         }
         if (data == null) {
             mSelectIndex = 0
-            mSpinner?.setSelection(0)
             mData.clear()
         } else {
             mData.addAll(data)
         }
         notifyDataSetChanged()
+        mSpinner?.setSelection(0)
     }
 
     var mSelectIndex = 0

@@ -86,4 +86,14 @@ object YcActivityManager {
     fun <T> hasExist(activityClass: Class<T>): Boolean {
         return mActivityStack.any { it.javaClass == activityClass }
     }
+    /**
+     * 退出app
+     */
+    @JvmStatic
+    fun  existApp(){
+        try {
+            finishAllActivity()
+            android.os.Process.killProcess(android.os.Process.myPid())
+        }catch (e:Exception){}
+    }
 }

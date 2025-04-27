@@ -71,7 +71,7 @@ dependencies {
     implementation(libs.androidx.camera.camera.view)
     implementation(libs.androidx.camera.camera.extensions)
 
-    implementation ("com.github.HyperInspire:hyperlpr3-android-sdk:1.0.3")
+    implementation("com.github.HyperInspire:hyperlpr3-android-sdk:1.0.3")
 
     val media3_version = "1.5.1"
 
@@ -83,4 +83,6 @@ dependencies {
     implementation("androidx.media3:media3-common-ktx:$media3_version")
     // Common functionality for reading and writing media containers
     implementation("androidx.media3:media3-container:$media3_version")
+
+    implementation("com.github.ychxx:Android-PickerView:1.9")
 }

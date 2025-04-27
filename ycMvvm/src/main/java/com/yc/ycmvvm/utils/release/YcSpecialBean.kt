@@ -9,7 +9,11 @@ import com.yc.ycmvvm.R
 import com.yc.ycmvvm.config.YcInit
 import com.yc.ycmvvm.exception.YcException
 import com.yc.ycmvvm.extension.ycLoadImageRes
-
+sealed class SpecialLayoutType {
+    data object ERROR : SpecialLayoutType()
+    data object EMPTY : SpecialLayoutType()
+    data object SUCCESS : SpecialLayoutType()
+}
 /**
  * 刷新标题栏状态
  * @param vActionbar View

@@ -12,7 +12,13 @@ class YcRefreshUtil(
     var mPageIndex: Int = 1
     var mPageSize: Int = 10
     var mPageSum: Int? = null
+    fun resetPageData() {
+        mPageIndex = mPageIndexDefault
+        mPageSize = mPageSizeDefault
+    }
+
     fun reset() {
+        resetPageData()
         mPageIndex = mPageIndexDefault
         mPageSize = mPageSizeDefault
         mPageSum = null
@@ -37,6 +43,7 @@ class YcRefreshUtil(
     init {
         reset()
         mSmartRefreshLayout.setOnRefreshListener {
+            resetPageData()
             mSmartRefreshLayout.finishRefresh()
             mRefreshAndMoreCall?.invoke(mPageIndex)
         }
@@ -85,6 +92,12 @@ class YcRefreshUtil(
 
     fun refresh() {
         reset()
-        mSmartRefreshLayout.autoRefresh()
+        if (hasRefresh) {
+            mSmartRefreshLayout.autoRefresh()
+        } else {
+            resetPageData()
+            mSmartRefreshLayout.finishRefresh()
+            mRefreshAndMoreCall?.invoke(mPageIndex)
+        }
     }
 }

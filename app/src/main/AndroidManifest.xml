@@ -52,6 +52,7 @@
         <activity android:name=".ui.TestCameraXAc" />
         <activity android:name=".ui.InputBoxAc" />
         <activity android:name=".ui.TestVideoXAc" />
+        <activity android:name=".ui.TestPickerViewAc" />
 
 <!--        <provider-->
 <!--            android:name=".utils.YcCameraXProvider"-->

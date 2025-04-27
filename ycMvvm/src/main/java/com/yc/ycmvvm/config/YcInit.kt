@@ -12,16 +12,11 @@ import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.yc.ycmvvm.utils.release.YcSpecialViewConfigureImp
 import com.yc.ycmvvm.R
-import com.yc.ycmvvm.data.constans.YcNetErrorCode
-import com.yc.ycmvvm.exception.YcException
 import com.yc.ycmvvm.extension.YcLogExt
-import com.yc.ycmvvm.utils.release.YcSpecialState
+import com.yc.ycmvvm.net.YcRetrofitUtil
 import com.yc.ycmvvm.utils.release.YcSpecialViewConfigureBase
 import com.yc.ycmvvm.view.dialog.YcDialogCommon
 import com.yc.ycmvvm.view.dialog.YcIDialog
-
-
-import okhttp3.Interceptor
 import org.xutils.x
 import java.io.File
 
@@ -61,21 +56,12 @@ class YcInit private constructor() {
     var mImgIdResLoading: Int = R.drawable.yc_loading
 
     /**
-     * 请求成功返回的code
+     * 网络请求相关配置
      */
-    var mNetSuccessCode: MutableList<Int>? = mutableListOf(200)
+    var mYcRetrofitConfig: YcRetrofitUtil.YcRetrofitConfig? = null
+
 
     /**
-     * retrofit的过滤器
-     */
-    val mInterceptor: MutableList<Interceptor> = mutableListOf()
-
-    /**
-     * 接口地址
-     */
-    var mDefaultBaseUrl = ""
-
-        /**
      * 创建一个替换布局（用于不一致时变换）
      */
     var mCreateSpecialViewBuildBase: ((context: Context) -> YcSpecialViewConfigureBase) = {
@@ -90,49 +76,35 @@ class YcInit private constructor() {
     }
 
     /**
-     * 请求异常转替换布局状态
-     */
-    var mYcExceptionToSpecialState: (YcException) -> Int = {
-        when (it.knownCode) {
-            YcNetErrorCode.TIME_OUT_ERROR, YcNetErrorCode.NETWORK_NO -> {
-                YcSpecialState.NETWORK_NO
-            }
-
-            YcNetErrorCode.DATE_NULL -> {
-                YcSpecialState.DATA_EMPTY
-            }
-
-            YcNetErrorCode.DATE_NULL_ERROR -> {
-                YcSpecialState.DATA_EMPTY_ERROR
-            }
-
-            YcNetErrorCode.JSON_ERROR, YcNetErrorCode.UN_KNOWN_ERROR, YcNetErrorCode.REQUEST_ERROR -> {
-                YcSpecialState.NETWORK_ERROR
-            }
-
-            else -> {
-                YcSpecialState.NETWORK_ERROR
-            }
-        }
-    }
-
-    /**
-     * 异常时会调用该方法（暂时只要网络请求出现异常时调用）
-     * 返回true时，会强制跳出，不执行原有的逻辑
-     */
-    var mIsForceNoHandle: ((exception: YcException) -> Boolean)? = null
-
-    /**
      * 默认保存文件夹路径
      */
     lateinit var mDefaultSaveDirPath: String
 
     lateinit var mApplication: Application
 
-    fun init(app: Application, defaultSaveDirPath: String = app.filesDir.path + File.separator, hasLogShow: Boolean = BuildConfig.DEBUG) {
+    fun initAll(
+        app: Application,
+        defaultSaveDirPath: String = app.filesDir.path + File.separator,
+        hasLogShow: Boolean = BuildConfig.DEBUG,
+        retrofitConfig: YcRetrofitUtil.YcRetrofitConfig
+    ) {
+        initImmediately(app, defaultSaveDirPath, retrofitConfig)
+        initLazy(hasLogShow)
+    }
+
+    /**
+     * 需在onCreate里初始化的
+     */
+    fun initImmediately(app: Application, defaultSaveDirPath: String = app.filesDir.path + File.separator, retrofitConfig: YcRetrofitUtil.YcRetrofitConfig) {
+        mYcRetrofitConfig = retrofitConfig
         mApplication = app
         mDefaultSaveDirPath = defaultSaveDirPath
-        //Logger初始化
+    }
+
+    /**
+     * 可延迟初始化的
+     */
+    fun initLazy(hasLogShow: Boolean = BuildConfig.DEBUG) {
         XLog.init(LogLevel.ALL)
         x.Ext.init(mApplication)
         setLog(hasLogShow)
@@ -148,21 +120,5 @@ class YcInit private constructor() {
 
     fun getResources(): Resources = mApplication.resources
 
-    /**
-     *检测异常时是否继续执行
-     */
-    inline fun isContinueWhenException(exception: YcException, crossinline execution: YcException.() -> Unit) {
-        if (mIsForceNoHandle?.invoke(exception) != true) {
-            execution.invoke(exception)
-        }
-    }
 
-    /**
-     *检测异常时是否继续执行（耗时的）
-     */
-    suspend inline fun isContinueWhenExceptionSuspend(exception: YcException, crossinline execution: suspend YcException.() -> Unit) {
-        if (mIsForceNoHandle?.invoke(exception) != true) {
-            execution.invoke(exception)
-        }
-    }
 }
