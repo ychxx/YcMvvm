@@ -5,8 +5,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import com.yc.ycmvvm.R
-import com.yc.ycmvvm.config.YcInit
 import com.yc.ycmvvm.exception.YcException
 import com.yc.ycmvvm.extension.ycLoadImageRes
 sealed class SpecialLayoutType {

@@ -3,16 +3,19 @@ package com.yc.ycmvvm.utils
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.yc.ycmvvm.data.entity.YcRefreshHelperBo
 
-class YcRefreshUtil(
+/**
+ *  用于没有总页数的情况
+ */
+class YcRefreshNoSumUtil(
     private val mSmartRefreshLayout: SmartRefreshLayout,
     private val mPageIndexDefault: Int = 1,
-    private val mPageSizeDefault: Int = 10,
+    private val mPageSizeDefault: Int = 20,
     private val hasRefresh: Boolean = true,
     private val hasMore: Boolean = true,
 ) {
+
     var mPageIndex: Int = 1
-    var mPageSize: Int = 10
-    var mPageSum: Int? = null
+    var mPageSize: Int = 20
     fun resetPageData() {
         mPageIndex = mPageIndexDefault
         mPageSize = mPageSizeDefault
@@ -20,9 +23,6 @@ class YcRefreshUtil(
 
     fun reset() {
         resetPageData()
-        mPageIndex = mPageIndexDefault
-        mPageSize = mPageSizeDefault
-        mPageSum = null
         if (hasRefresh) {
             mSmartRefreshLayout.setEnableRefresh(true)
             mSmartRefreshLayout.finishRefresh()
@@ -44,43 +44,33 @@ class YcRefreshUtil(
     init {
         reset()
         mSmartRefreshLayout.setOnRefreshListener {
+            mSmartRefreshLayout.finishLoadMore()
             resetPageData()
-            mSmartRefreshLayout.finishRefresh()
             mRefreshAndMoreCall?.invoke(YcRefreshHelperBo.RefreshState.Refresh, mPageIndex, mPageSize)
         }
         mSmartRefreshLayout.setOnLoadMoreListener {
-            if (mPageSum == null || mPageIndex <= mPageSum!!) {
-                mRefreshAndMoreCall?.invoke(YcRefreshHelperBo.RefreshState.LoadMore, mPageIndex, mPageSize)
-            } else {
-                mSmartRefreshLayout.finishRefresh()
-                mSmartRefreshLayout.finishRefreshWithNoMoreData()
-            }
+            mRefreshAndMoreCall?.invoke(YcRefreshHelperBo.RefreshState.LoadMore, mPageIndex, mPageSize)
+        }
+    }
+
+    fun <T> setResult(list: List<T>?) {
+        val size = list?.size ?: 0
+        if (size < mPageSize) {
+            setNoMoreData()
+        } else {
+            autoAdd()
+            finish()
         }
     }
 
     /**
-     * 设置总数
-     *
-     * @param total
+     * 设置没有更多数据
      */
-    fun setTotal(total: Int) {
-        mPageSum = (total + mPageSize - 1) / mPageSize
+    fun setNoMoreData() {
+        mSmartRefreshLayout.finishRefreshWithNoMoreData()
+        finish()
     }
 
-    /**
-     * 设置总数
-     *
-     * @param total
-     */
-    fun setPageSum(pageSum: Int) {
-        mPageSum = pageSum
-    }
-
-    fun autoAdd() {
-        if (mPageIndex <= mPageSum!!) {
-            mPageIndex++;
-        }
-    }
 
     /**
      * 结束
@@ -91,14 +81,12 @@ class YcRefreshUtil(
     }
 
 
+    fun autoAdd() {
+        mPageIndex++
+    }
+
     fun refresh() {
         reset()
-        if (hasRefresh) {
-            mSmartRefreshLayout.autoRefresh()
-        } else {
-            resetPageData()
-            mSmartRefreshLayout.finishRefresh()
-            mRefreshAndMoreCall?.invoke(YcRefreshHelperBo.RefreshState.Refresh, mPageIndex, mPageSize)
-        }
+        mSmartRefreshLayout.autoRefresh()
     }
 }
