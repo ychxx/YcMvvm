@@ -16,7 +16,7 @@ interface YcISpinnerAdapter<Data : Any, VbSelect : ViewBinding, VbDropDown : Vie
     /**
      * 展示view更新ui
      */
-    var mSelectItemOnUpdate: (VbSelect.(position: Int, data: Data) -> Unit)?
+    var mSelectItemOnUpdate: (VbSelect.(position: Int?, data: Data?) -> Unit)?
 
     /**
      * 下拉框更新ui

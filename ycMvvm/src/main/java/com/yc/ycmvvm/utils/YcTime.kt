@@ -35,6 +35,16 @@ object YcTime {
     }
 
     /**
+     * 生成Calendar
+     */
+    @JvmStatic
+    fun getCalendar(year: Int, month: Int = 1, day: Int = 1, hour: Int = 0, minute: Int = 0, second: Int = 0): Calendar {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, day, hour, minute, second)
+        return calendar
+    }
+
+    /**
      * 将Date类型格式化成String yyyy-MM-dd
      *
      * @param date 时间
@@ -90,11 +100,11 @@ object YcTime {
     }
 
     @JvmStatic
-    fun stringToDate(formatTime: String): Date? {
-        val sdf = SimpleDateFormat(FORMAT_TIME, Locale.getDefault())
+    fun stringToDate(data: String, formatTime: String = FORMAT_TIME): Date? {
+        val sdf = SimpleDateFormat(formatTime, Locale.getDefault())
         var timeDate: Date? = null
         try {
-            timeDate = sdf.parse(formatTime)
+            timeDate = sdf.parse(data)
         } catch (e: ParseException) {
             e.printStackTrace()
         }

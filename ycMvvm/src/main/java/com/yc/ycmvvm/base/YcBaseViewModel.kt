@@ -32,21 +32,40 @@ open class YcBaseViewModel : ViewModel() {
         handle: (ex: Throwable) -> YcException? = { ex -> errHandle(ex) },
         hasShowLoading: Boolean = true,
         hasAutoClose: Boolean = true
-    ) =
-        flow<YcResult<T>> {
-            val result = block.invoke()
-            emit(YcResult.Success(result))
-        }.onStart {
-            if (hasShowLoading) showLoading()
-        }.onCompletion {
-            if (hasAutoClose) hideLoading()
-        }.catch {
-            it.printStackTrace()
-            val result = handle.invoke(it)
-            if (result != null) {
-                emit(YcResult.Fail(result))
-            }
+    ) = flow<YcResult<T>> {
+        val result = block.invoke()
+        emit(YcResult.Success(result))
+    }.onStart {
+        if (hasShowLoading) showLoading()
+    }.onCompletion {
+        if (hasAutoClose) hideLoading()
+    }.catch {
+        it.printStackTrace()
+        val result = handle.invoke(it)
+        if (result != null) {
+            emit(YcResult.Fail(result))
         }
+    }
+
+    protected fun <T> ycFlowIo(
+        block: suspend () -> T,
+        handle: (ex: Throwable) -> YcException? = { ex -> errHandle(ex) },
+        hasShowLoading: Boolean = true,
+        hasAutoClose: Boolean = true
+    ) = flow<YcResult<T>> {
+        val result = block.invoke()
+        emit(YcResult.Success(result))
+    }.onStart {
+        if (hasShowLoading) showLoading()
+    }.onCompletion {
+        if (hasAutoClose) hideLoading()
+    }.catch {
+        it.printStackTrace()
+        val result = handle.invoke(it)
+        if (result != null) {
+            emit(YcResult.Fail(result))
+        }
+    }.flowOn(Dispatchers.IO)
 
     protected suspend fun <T> Flow<YcResult<T>>.ycCollect(
         handle: (cause: Throwable) -> YcException? = { ex -> errHandle(ex) },

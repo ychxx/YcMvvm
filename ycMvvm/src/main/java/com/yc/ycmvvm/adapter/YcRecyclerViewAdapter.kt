@@ -98,9 +98,7 @@ open class YcRecyclerViewAdapter<Data : Any, VB : ViewBinding>(protected val cre
     fun addAllData(data: List<Data>?, isClear: Boolean = true) {
         if (isClear)
             mData.clear()
-        if (data == null) {
-            mData.clear()
-        } else {
+        if (data != null) {
             mData.addAll(data)
         }
         notifyDataSetChanged()

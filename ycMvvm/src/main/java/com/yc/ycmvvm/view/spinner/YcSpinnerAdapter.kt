@@ -16,7 +16,7 @@ open class YcSpinnerAdapter<Data : Any, VbSelect : ViewBinding, VbDropDown : Vie
     internal var mYcSpinner: YcISpinner? = null
 
     override var mDropDownShowCall: (VbSelect.(hasShow: Boolean) -> Unit)? = null
-    override var mSelectItemOnUpdate: (VbSelect.(position: Int, data: Data) -> Unit)? = null
+    override var mSelectItemOnUpdate: (VbSelect.(position: Int?, data: Data?) -> Unit)? = null
     override var mDropDownOnUpdate: (VbDropDown.(position: Int, data: Data, positionSelect: Boolean) -> Unit)? = null
     override var mDropDownItemClick: ((item: Data, position: Int) -> Unit)? = null
     override var mYcISpinner: YcISpinner? = null
@@ -38,6 +38,7 @@ open class YcSpinnerAdapter<Data : Any, VbSelect : ViewBinding, VbDropDown : Vie
     override fun getSelectItemView(): VbSelect {
         if (mSelectItemView == null) {
             mSelectItemView = vbSelect.invoke(LayoutInflater.from(mYcSpinner!!.getViewGroup().context), mYcSpinner!!.getViewGroup(), false)
+            setSelectPosition(mDropDownAdapter.mSelectIndex)
         }
         mSelectItemView!!.root.setOnClickListener {
             mDropDownShowCall?.invoke(mSelectItemView!!, true)
@@ -68,8 +69,9 @@ open class YcSpinnerAdapter<Data : Any, VbSelect : ViewBinding, VbDropDown : Vie
         if (mDropDownAdapter.mSelectIndex != selectIndex) {
             mDropDownAdapter.mSelectIndex = selectIndex
         }
-        if (mDropDownAdapter.mSelectIndex != null && mDropDownAdapter.getSelectItem() != null)
-            mSelectItemOnUpdate?.invoke(mSelectItemView!!, mDropDownAdapter.mSelectIndex!!, mDropDownAdapter.getSelectItem()!!)
+        if (mSelectItemView != null) {
+            mSelectItemOnUpdate?.invoke(mSelectItemView!!, mDropDownAdapter.mSelectIndex, mDropDownAdapter.getSelectItem())
+        }
     }
 
     fun addAllData(data: List<Data>, hasClear: Boolean = false) {
@@ -107,4 +109,8 @@ open class YcSpinnerAdapter<Data : Any, VbSelect : ViewBinding, VbDropDown : Vie
     }
 
 
+    fun clearData() {
+        mDropDownAdapter.mData.clear()
+        setSelectPosition(null)
+    }
 }

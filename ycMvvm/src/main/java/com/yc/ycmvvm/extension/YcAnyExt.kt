@@ -48,11 +48,13 @@ fun String?.ycToNoEmptyHasUnit(unit: String, defaultData: String = YcAnyExt.mCom
         this + unit
     }
 }
+
 fun String?.ycToInt(): Int? = ycTryReturnData(block = {
     return@ycTryReturnData this?.toIntOrNull()
 }, error = {
     return@ycTryReturnData null
 })
+
 /**
  * 转成Double类型，格式错误返回空
  */
@@ -320,4 +322,15 @@ fun <T> List<T>?.ycIsNotEmpty(): Boolean {
  */
 fun <T> List<T>?.ycIsEmpty(): Boolean {
     return this.isNullOrEmpty()
+}
+
+/**
+ * 获取指定索引的元素
+ */
+fun <T> List<T>?.ycGet(index: Int): T? {
+    return if (this.ycIsEmpty() || this!!.size <= index) {
+        null
+    } else {
+        this[index]
+    }
 }
