@@ -64,6 +64,21 @@ fun Calendar.ycGetWeek(): Int {
     return get(Calendar.DAY_OF_WEEK)
 }
 
+/**
+ * 获取实际月份
+ * 从1开始，1代表1月，12代表12月
+ */
+fun Calendar.ycGetMonthReal(): Int {
+    return get(Calendar.MONTH) + 1
+}
+
+/**
+ * 获取当前月份总天数
+ */
+fun Calendar.ycGetMonthSum(): Int {
+    return getActualMaximum(Calendar.DAY_OF_MONTH)
+}
+
 val YC_WEEK = listOf("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
 
 /**

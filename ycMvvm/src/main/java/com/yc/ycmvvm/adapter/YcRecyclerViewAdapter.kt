@@ -155,4 +155,11 @@ open class YcRecyclerViewAdapter<Data : Any, VB : ViewBinding>(protected val cre
         }
         notifyItemRangeRemoved(positionStart, positionEnd - positionStart + 1)
     }
+    fun setData(data: Data, position: Int) {
+        if (position < 0 || position >= mData.size) {
+            ycLogE("YcRecyclerViewAdapter setData: position=${position} 越界")
+            return
+        }
+        mData[position] = data
+    }
 }

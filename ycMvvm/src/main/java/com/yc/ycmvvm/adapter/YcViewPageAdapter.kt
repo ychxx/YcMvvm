@@ -1,20 +1,14 @@
 package com.yc.ycmvvm.adapter
 
-import android.graphics.Typeface
-import android.view.LayoutInflater
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.yc.ycmvvm.R
-import com.yc.ycmvvm.extension.ycLogE
 
 open class YcViewPageAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fragmentManager, lifecycle) {
     init {
@@ -25,8 +19,8 @@ open class YcViewPageAdapter(fragmentManager: FragmentManager, lifecycle: Lifecy
         })
     }
 
-    protected var fragmentList = mutableListOf<Fragment>()
-    protected var tabNameList = mutableListOf<String>()
+    var fragmentList = mutableListOf<Fragment>()
+    var tabNameList = mutableListOf<String>()
     override fun getItemCount(): Int {
         return fragmentList.size
     }

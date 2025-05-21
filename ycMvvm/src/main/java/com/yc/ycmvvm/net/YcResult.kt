@@ -1,5 +1,6 @@
 package com.yc.ycmvvm.net
 
+import com.yc.ycmvvm.exception.IYcExceptionBase
 import com.yc.ycmvvm.exception.YcException
 
 /**
@@ -17,7 +18,7 @@ inline fun <reified T> YcResult<T>.doSuccess(crossinline success: (T) -> Unit): 
     return this
 }
 
-inline fun <reified T> YcResult<T>.doFail(crossinline failure: (YcException) -> Unit): YcResult<T> {
+inline fun <reified T> YcResult<T>.doFail(crossinline failure: (IYcExceptionBase) -> Unit): YcResult<T> {
     if (this is YcResult.Fail) {
         failure(exception)
     }
