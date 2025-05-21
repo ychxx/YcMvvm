@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
+import com.yc.ycmvvm.exception.IYcExceptionBase
 import com.yc.ycmvvm.utils.YcActivityManager
 import com.yc.ycmvvm.exception.YcException
 import com.yc.ycmvvm.extension.ycShowToast
@@ -103,7 +104,7 @@ abstract class YcBaseActivity<VB : ViewBinding>(private val createVB: ((LayoutIn
         }
     }
 
-    protected fun YcException.ycShowNetError(defaultMsg: String = "请求失败,错误msg为空") {
+    protected fun IYcExceptionBase.ycShowNetError(defaultMsg: String = "请求失败,错误msg为空") {
         ycShowToast(msg ?: defaultMsg)
     }
 }
