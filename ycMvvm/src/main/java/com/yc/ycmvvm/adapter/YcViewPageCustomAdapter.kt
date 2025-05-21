@@ -8,7 +8,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yc.ycmvvm.extension.ycGet
 
-class YcViewPageCustomAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, private val createCustomView: () -> View) :
+open class YcViewPageCustomAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, private val createCustomView: () -> View) :
     YcViewPageAdapter(fragmentManager, lifecycle) {
     open var tabUpdate: ((customView: View, hasSelect: Boolean, tabName: String?, position: Int) -> Unit)? = null
     override fun <T : Fragment> setFragmentList(newFragmentList: List<T>, tabNameList: List<String>, setSelected: Int?) {
