@@ -85,11 +85,12 @@ object YcReleaseLayoutUtils {
                 containerFl = FrameLayout(originalView.context)
                 containerFl.tag = containerTag //设置Tag用于标示
                 val originalViewLayoutParams = originalView.layoutParams
-                if (originalView is RecyclerView) {
-                    containerFl.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                } else {
-                    containerFl.layoutParams = originalViewLayoutParams //将布局设置成originalView一样
-                }
+//                if (originalView is RecyclerView) {
+//                    containerFl.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+//                } else {
+//                    containerFl.layoutParams = originalViewLayoutParams //将布局设置成originalView一样
+//                }
+                containerFl.layoutParams = originalViewLayoutParams //将布局设置成originalView一样
                 //从viewParentGroup移除originalView后，再将originalView添加containerFl里
                 val index = viewParentGroup.indexOfChild(originalView)
                 viewParentGroup.removeView(originalView)

@@ -1,5 +1,6 @@
 package com.yc.ycmvvm.ui
 
+import android.content.Context
 import android.os.Bundle
 import com.yc.ycmvvm.adapter.YcRecyclerViewAdapter
 import com.yc.ycmvvm.base.YcBaseActivity
@@ -15,11 +16,20 @@ import com.yc.ycmvvm.utils.YcInstallUtil
 class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
 
     private val adapter by lazy {
-        YcRecyclerViewAdapter<String, MainItemBinding>(MainItemBinding::inflate).apply {
+        YcRecyclerViewAdapter<ToAc, MainItemBinding>(MainItemBinding::inflate).apply {
             mOnUpdate = { data ->
-                tv.text = data
+                tv.text = data.name
             }
         }
+    }
+
+    sealed class ToAc(val name: String, val to: (context: Context) -> Unit) {
+        data object InputBox : ToAc("测试输入框", { InputBoxAc.toAc(it) })
+        data object TestCameraX : ToAc("测试CameraX", { TestCameraXAc.toAc(it) })
+        data object TestVideoX : ToAc("测试视频播放", { TestVideoXAc.toAc(it) })
+        data object DownLoadApk : ToAc("测试安装下载apk", { })
+        data object TestPickerView : ToAc("测试选择器", { TestPickerViewAc.toAc(it) })
+        data object TestSpecialView : ToAc("测试替换布局", { TestSpecialViewAc.toAc(it) })
     }
 
     private lateinit var mYcInstallUtil: YcInstallUtil
@@ -30,26 +40,20 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
             ycShowToast("安装失败")
         }
         rv.adapter = adapter
-        adapter.addData("测试输入框")
-        adapter.addData("测试CameraX")
-        adapter.addData("测试视频播放")
-        adapter.addData("测试安装下载apk")
-        adapter.addData("测试选择器")
+        adapter.addAllData(
+            listOf(
+                ToAc.InputBox,
+                ToAc.TestPickerView,
+                ToAc.TestCameraX,
+                ToAc.TestVideoX,
+                ToAc.DownLoadApk,
+                ToAc.TestPickerView,
+                ToAc.TestSpecialView
+            )
+        )
         adapter.mItemClick = {
             when (it) {
-                "测试输入框" -> {
-                    InputBoxAc.toAc(this@MainActivity)
-                }
-
-                "测试CameraX" -> {
-                    TestCameraXAc.toAc(this@MainActivity)
-                }
-
-                "测试视频播放" -> {
-                    TestVideoXAc.toAc(this@MainActivity)
-                }
-
-                "测试安装下载apk" -> {
+                ToAc.DownLoadApk -> {
                     val url = "https://pub-parking.zrzkwlw.com/2025-04-22/5676d59b9a1158d63e591969fec90f01.apk"
                     YcDownload.createDownloadApkHasProgress(this@MainActivity, url, YcInit.mInstance.mDefaultSaveDirPath + "test.apk", {
                         mYcInstallUtil.mApkFile = it
@@ -57,10 +61,7 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
                     }, { ycShowToast(it.ycToNoEmpty("下载apk失败")) }).start()
                 }
 
-                "测试选择器" -> {
-                    TestPickerViewAc.toAc(this@MainActivity)
-                }
-
+                else -> it.to(this@MainActivity)
             }
         }
     }
