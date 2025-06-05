@@ -1,0 +1,11 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 选中状态 -->
+    <item android:drawable="@color/test" android:state_checked="true" />
+    <item android:drawable="@color/test" android:state_selected="true" />
+    <!-- 未选中状态 -->
+    <item android:drawable="@color/white" android:state_checked="false" />
+    <item android:drawable="@color/white" android:state_selected="false" />
+
+    <!-- 未选中状态 -->
+    <item android:drawable="@color/white" />
+</selector>

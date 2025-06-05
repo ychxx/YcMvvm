@@ -10,9 +10,9 @@ interface YcISpinner {
 
     fun hasDropdownShowing(): Boolean
 
-    var mAdapter: YcISpinnerAdapter<*, *, *>?
+    var mAdapter: YcISpinnerAdapterBase<*, *, *>?
 
-    fun setAdapter(adapter: YcISpinnerAdapter<*, *, *>)
+    fun setAdapter(adapter: YcISpinnerAdapterBase<*, *, *>)
 
     fun getViewGroup(): ViewGroup
 }

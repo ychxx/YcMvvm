@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ListAdapter
 import androidx.viewbinding.ViewBinding
 import com.yc.ycmvvm.extension.ycIsNotEmpty
 import com.yc.ycmvvm.extension.ycIsTrue
@@ -21,7 +22,7 @@ open class YcSpinnerAdapter<Data : Any, VbSelect : ViewBinding, VbDropDown : Vie
     override var mDropDownItemClick: ((item: Data, position: Int) -> Unit)? = null
     override var mYcISpinner: YcISpinner? = null
 
-    override var mDropDownAdapter: YcDropDownAdapter<Data, VbDropDown> = YcDropDownAdapter<Data, VbDropDown>(vbDropDown).apply {
+    open var mDropDownAdapter: YcDropDownAdapter<Data, VbDropDown> = YcDropDownAdapter<Data, VbDropDown>(vbDropDown).apply {
         mDropDownAdapterUpdate = { vb, position, data, hasSelect ->
             mDropDownOnUpdate?.invoke(vb, position, data, hasSelect)
         }
@@ -33,6 +34,10 @@ open class YcSpinnerAdapter<Data : Any, VbSelect : ViewBinding, VbDropDown : Vie
             }
             mYcSpinner?.dismissDropdown()
         }
+    }
+
+    override fun getListAdapter(): ListAdapter {
+        return mDropDownAdapter
     }
 
     override fun getSelectItemView(): VbSelect {

@@ -54,6 +54,7 @@
         <activity android:name=".ui.TestVideoXAc" />
         <activity android:name=".ui.TestPickerViewAc" />
         <activity android:name=".ui.TestSpecialViewAc" />
+        <activity android:name=".ui.TestSpinnerAc" />
 
 <!--        <provider-->
 <!--            android:name=".utils.YcCameraXProvider"-->

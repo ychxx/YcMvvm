@@ -33,11 +33,6 @@ android {
             signingConfig = signingConfigs.getByName("releaseSignConfig")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
-
-        debug {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -85,4 +80,6 @@ dependencies {
     implementation("androidx.media3:media3-container:$media3_version")
 
     implementation("com.github.ychxx:Android-PickerView:1.9")
+
+    implementation ("com.google.android.flexbox:flexbox:3.0.0")
 }

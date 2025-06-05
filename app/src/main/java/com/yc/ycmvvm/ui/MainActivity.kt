@@ -30,6 +30,7 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
         data object DownLoadApk : ToAc("测试安装下载apk", { })
         data object TestPickerView : ToAc("测试选择器", { TestPickerViewAc.toAc(it) })
         data object TestSpecialView : ToAc("测试替换布局", { TestSpecialViewAc.toAc(it) })
+        data object TestSpinner : ToAc("测试下拉框", { TestSpinnerAc.toAc(it) })
     }
 
     private lateinit var mYcInstallUtil: YcInstallUtil
@@ -48,7 +49,8 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
                 ToAc.TestVideoX,
                 ToAc.DownLoadApk,
                 ToAc.TestPickerView,
-                ToAc.TestSpecialView
+                ToAc.TestSpecialView,
+                ToAc.TestSpinner
             )
         )
         adapter.mItemClick = {
