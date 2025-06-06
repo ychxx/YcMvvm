@@ -30,7 +30,7 @@ open class YcSpinnerAdapter<Data : Any, VbSelect : ViewBinding, VbDropDown : Vie
                 mDropDownShowCall?.invoke(mSelectItemView!!, false)
                 mSelectItemOnUpdate?.invoke(mSelectItemView!!, position, item)
             }
-            mYcSpinner?.dismissDropdown()
+            dismissDropdown()
         }
     }
 
@@ -50,12 +50,21 @@ open class YcSpinnerAdapter<Data : Any, VbSelect : ViewBinding, VbDropDown : Vie
     }
 
     override fun itemClickShowDrop() {
-        mDropDownShowCall?.invoke(mSelectItemView!!, true)
         if (mYcSpinner?.hasDropdownShowing().ycIsTrue()) {
-            mYcSpinner?.dismissDropdown()
+            dismissDropdown()
         } else {
-            mYcSpinner?.showDropdown()
+            showDropdown()
         }
+    }
+
+    private fun dismissDropdown() {
+        mDropDownShowCall?.invoke(mSelectItemView!!, false)
+        mYcSpinner?.dismissDropdown()
+    }
+
+    private fun showDropdown() {
+        mDropDownShowCall?.invoke(mSelectItemView!!, true)
+        mYcSpinner?.showDropdown()
     }
 
     override fun getSelectedItemPosition(): Int? {

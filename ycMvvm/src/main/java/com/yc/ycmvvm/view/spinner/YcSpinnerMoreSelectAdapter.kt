@@ -48,14 +48,21 @@ open class YcSpinnerMoreSelectAdapter<Data : Any, VbSelect : ViewBinding, VbDrop
     }
 
     override fun itemClickShowDrop() {
-        mDropDownShowCall?.invoke(mSelectItemView!!, true)
         if (mYcSpinner?.hasDropdownShowing().ycIsTrue()) {
-            mYcSpinner?.dismissDropdown()
+            dismissDropdown()
         } else {
-            mYcSpinner?.showDropdown()
+            showDropdown()
         }
     }
+    private fun dismissDropdown() {
+        mDropDownShowCall?.invoke(mSelectItemView!!, false)
+        mYcSpinner?.dismissDropdown()
+    }
 
+    private fun showDropdown() {
+        mDropDownShowCall?.invoke(mSelectItemView!!, true)
+        mYcSpinner?.showDropdown()
+    }
     override fun getSelectedItemPosition(): List<Int>? {
         return mDropDownMoreSelectAdapter.getSelectPosition()
     }
