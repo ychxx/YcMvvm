@@ -42,7 +42,6 @@ class YcDialogCommon @JvmOverloads constructor(
         mViewBinding = YcDialogCommonBinding.inflate(layoutInflater)
         setContentView(mViewBinding.root)
 
-
         //设置对话框位置大小
         val dialogWindow = window
         dialogWindow!!.setGravity(Gravity.CENTER)

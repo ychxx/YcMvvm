@@ -13,7 +13,7 @@ open class YcSpinnerMoreSelectAdapter<Data : Any, VbSelect : ViewBinding, VbDrop
 ) : YcISpinnerMoreSelectAdapter<Data, VbSelect, VbDropDown> {
     protected var mSelectItemView: VbSelect? = null
     internal var mYcSpinner: YcISpinner? = null
-    override var mSelectLimit: ((clickPosition: Int) -> Boolean)? = null
+    override var mSelectLimit: ((clickPosition: Int, clickDate: Data) -> Boolean)? = null
     override var mDropDownShowCall: (VbSelect.(hasShow: Boolean) -> Unit)? = null
     override var mSelectItemOnUpdate: (VbSelect.(position: List<Int>?, data: List<Data>?) -> Unit)? = null
     override var mDropDownOnUpdate: (VbDropDown.(position: Int, data: Data, positionSelect: Boolean) -> Unit)? = null
@@ -27,8 +27,8 @@ open class YcSpinnerMoreSelectAdapter<Data : Any, VbSelect : ViewBinding, VbDrop
             mDropDownShowCall?.invoke(mSelectItemView!!, false)
             mSelectItemOnUpdate?.invoke(mSelectItemView!!, this.getSelectPosition(), this.getSelectItem())
         }
-        mIsItemSelect = {
-            this@YcSpinnerMoreSelectAdapter.mSelectLimit == null || this@YcSpinnerMoreSelectAdapter.mSelectLimit!!.invoke(it)
+        mIsItemSelect = { clickPosition, clickDate ->
+            this@YcSpinnerMoreSelectAdapter.mSelectLimit == null || this@YcSpinnerMoreSelectAdapter.mSelectLimit!!.invoke(clickPosition, clickDate)
         }
     }
 
@@ -42,14 +42,18 @@ open class YcSpinnerMoreSelectAdapter<Data : Any, VbSelect : ViewBinding, VbDrop
             setSelectPosition(mDropDownMoreSelectAdapter.getSelectPosition())
         }
         mSelectItemView!!.root.setOnClickListener {
-            mDropDownShowCall?.invoke(mSelectItemView!!, true)
-            if (mYcSpinner?.hasDropdownShowing().ycIsTrue()) {
-                mYcSpinner?.dismissDropdown()
-            } else {
-                mYcSpinner?.showDropdown()
-            }
+            itemClickShowDrop()
         }
         return mSelectItemView!!
+    }
+
+    override fun itemClickShowDrop() {
+        mDropDownShowCall?.invoke(mSelectItemView!!, true)
+        if (mYcSpinner?.hasDropdownShowing().ycIsTrue()) {
+            mYcSpinner?.dismissDropdown()
+        } else {
+            mYcSpinner?.showDropdown()
+        }
     }
 
     override fun getSelectedItemPosition(): List<Int>? {
@@ -66,9 +70,9 @@ open class YcSpinnerMoreSelectAdapter<Data : Any, VbSelect : ViewBinding, VbDrop
     }
 
 
-    override fun setSelectPosition(selectIndex: List<Int>?) {
+    override fun setSelectPosition(selectPosition: List<Int>?) {
         mDropDownMoreSelectAdapter.mSelectIndexList.clear()
-        selectIndex?.forEach {
+        selectPosition?.forEach {
             mDropDownMoreSelectAdapter.mSelectIndexList[it] = true
         }
         if (mSelectItemView != null) {

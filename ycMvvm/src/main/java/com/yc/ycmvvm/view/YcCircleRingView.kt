@@ -137,8 +137,6 @@ class YcCircleRingView @JvmOverloads constructor(context: Context, attrs: Attrib
     override fun draw(canvas: Canvas) {
         canvas.apply {
             this.drawColor(mBgColor)
-
-
             rectF?.let {
                 val ringWidth = (mRingWithRate * width / 2f)
                 mPaintRing.strokeWidth = ringWidth

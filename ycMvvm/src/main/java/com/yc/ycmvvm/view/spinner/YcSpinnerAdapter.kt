@@ -1,9 +1,7 @@
 package com.yc.ycmvvm.view.spinner
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.ListAdapter
 import androidx.viewbinding.ViewBinding
 import com.yc.ycmvvm.extension.ycIsNotEmpty
@@ -46,14 +44,18 @@ open class YcSpinnerAdapter<Data : Any, VbSelect : ViewBinding, VbDropDown : Vie
             setSelectPosition(mDropDownAdapter.mSelectIndex)
         }
         mSelectItemView!!.root.setOnClickListener {
-            mDropDownShowCall?.invoke(mSelectItemView!!, true)
-            if (mYcSpinner?.hasDropdownShowing().ycIsTrue()) {
-                mYcSpinner?.dismissDropdown()
-            } else {
-                mYcSpinner?.showDropdown()
-            }
+            itemClickShowDrop()
         }
         return mSelectItemView!!
+    }
+
+    override fun itemClickShowDrop() {
+        mDropDownShowCall?.invoke(mSelectItemView!!, true)
+        if (mYcSpinner?.hasDropdownShowing().ycIsTrue()) {
+            mYcSpinner?.dismissDropdown()
+        } else {
+            mYcSpinner?.showDropdown()
+        }
     }
 
     override fun getSelectedItemPosition(): Int? {

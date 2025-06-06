@@ -7,7 +7,7 @@ interface YcISpinnerMoreSelectAdapter<Data : Any, VbSelect : ViewBinding, VbDrop
      * 选中限制
      * @return true:可以选中 false:不可选中
      */
-    var mSelectLimit: ((clickPosition: Int) -> Boolean)?
+    var mSelectLimit: ((clickPosition: Int, clickDate: Data) -> Boolean)?
 
     /**
      * 设置选中项
@@ -23,8 +23,6 @@ interface YcISpinnerMoreSelectAdapter<Data : Any, VbSelect : ViewBinding, VbDrop
      * 获取选中的下标
      */
     fun getSelectedItemPosition(): List<Int>?
-
-
     /**
      * 展示view更新ui
      */

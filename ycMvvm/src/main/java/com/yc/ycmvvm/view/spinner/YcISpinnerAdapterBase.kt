@@ -26,6 +26,8 @@ interface YcISpinnerAdapterBase<Data : Any, VbSelect : ViewBinding, VbDropDown :
      */
     fun getSelectItemView(): VbSelect
 
+
+    fun itemClickShowDrop()
     /**
      * 绑定到spinner
      */

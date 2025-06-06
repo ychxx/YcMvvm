@@ -54,7 +54,7 @@ class TestSpinnerAc : YcBaseActivity<SpinnerAcBinding>(SpinnerAcBinding::inflate
             spaceSpDropCtv.text = it
 //            spaceSpDropCtv.setBackgroundResource(if (hasSelect) R.color.yc_blue else R.color.yc_white)
         }
-        override var mSelectLimit: ((clickPosition: Int) -> Boolean)? = {
+        override var mSelectLimit: ((Int, String) -> Boolean)? = { _, _ ->
             val selectItem = this.getSelectedItemPosition()?.size ?: 0
             if (selectItem >= 3) {
                 ycShowToast("最多只能选择3个标签")

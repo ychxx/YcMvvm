@@ -19,7 +19,7 @@ open class YcDropDownMoreSelectAdapter<Data : Any, Vb : ViewBinding>(private val
     /**
      * item能否选中,用于限制选中数量
      */
-    open var mIsItemSelect: ((clickPosition: Int) -> Boolean) = { true }
+    open var mIsItemSelect: ((clickPosition: Int, clickDate: Data) -> Boolean) = { _, _ -> true }
     override fun getCount(): Int {
         return mData.size
     }
@@ -46,7 +46,7 @@ open class YcDropDownMoreSelectAdapter<Data : Any, Vb : ViewBinding>(private val
                 }
                 notifyDataSetChanged()
             } else {
-                if (mIsItemSelect.invoke(position)) {
+                if (mIsItemSelect.invoke(position, getItem(position)!!)) {
                     mSelectIndexList[position] = true
                     getItem(position)?.let {
                         mDropDownAdapterItemClick?.invoke()
