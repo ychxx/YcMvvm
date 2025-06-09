@@ -24,12 +24,16 @@ open class YcSpinnerMoreSelectAdapter<Data : Any, VbSelect : ViewBinding, VbDrop
             mDropDownOnUpdate?.invoke(vb, position, data, hasSelect)
         }
         mDropDownAdapterItemClick = {
-            mDropDownShowCall?.invoke(mSelectItemView!!, false)
+//            mDropDownShowCall?.invoke(mSelectItemView!!, false)
             mSelectItemOnUpdate?.invoke(mSelectItemView!!, this.getSelectPosition(), this.getSelectItem())
         }
         mIsItemSelect = { clickPosition, clickDate ->
             this@YcSpinnerMoreSelectAdapter.mSelectLimit == null || this@YcSpinnerMoreSelectAdapter.mSelectLimit!!.invoke(clickPosition, clickDate)
         }
+    }
+
+    override fun spDropDownShowCall(hasShow: Boolean) {
+        mDropDownShowCall?.invoke(mSelectItemView!!, hasShow)
     }
 
     override fun getListAdapter(): ListAdapter {
@@ -55,12 +59,12 @@ open class YcSpinnerMoreSelectAdapter<Data : Any, VbSelect : ViewBinding, VbDrop
         }
     }
     private fun dismissDropdown() {
-        mDropDownShowCall?.invoke(mSelectItemView!!, false)
+//        mDropDownShowCall?.invoke(mSelectItemView!!, false)
         mYcSpinner?.dismissDropdown()
     }
 
     private fun showDropdown() {
-        mDropDownShowCall?.invoke(mSelectItemView!!, true)
+//        mDropDownShowCall?.invoke(mSelectItemView!!, true)
         mYcSpinner?.showDropdown()
     }
     override fun getSelectedItemPosition(): List<Int>? {

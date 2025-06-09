@@ -32,6 +32,9 @@ class TestSpinnerAc : YcBaseActivity<SpinnerAcBinding>(SpinnerAcBinding::inflate
         TestSpinnerMoreSelectItemBinding::inflate,
         TestSpinnerMoreSelectDropItemBinding::inflate
     ) {
+        override var mDropDownShowCall: (TestSpinnerMoreSelectItemBinding.(hasShow: Boolean) -> Unit)? = {
+            spinnerItemIv.text = if (it) "收起" else "展开"
+        }
         val itemAdapter = YcRecyclerViewAdapter<String, TestSpinnerMoreSelectItemItemBinding>(TestSpinnerMoreSelectItemItemBinding::inflate).apply {
             mOnUpdate = {
                 spinnerItemIv.text = it

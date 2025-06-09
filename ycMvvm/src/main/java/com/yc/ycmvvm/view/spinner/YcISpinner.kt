@@ -15,4 +15,7 @@ interface YcISpinner {
     fun setAdapter(adapter: YcISpinnerAdapterBase<*, *, *>)
 
     fun getViewGroup(): ViewGroup
+
+
+    var mShowCall: ((hasShow: Boolean) -> Unit)?
 }

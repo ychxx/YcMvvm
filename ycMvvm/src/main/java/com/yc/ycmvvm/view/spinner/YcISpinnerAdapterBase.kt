@@ -10,7 +10,7 @@ interface YcISpinnerAdapterBase<Data : Any, VbSelect : ViewBinding, VbDropDown :
      * 下拉框 显示隐藏回调
      */
     var mDropDownShowCall: (VbSelect.(hasShow: Boolean) -> Unit)?
-
+    fun spDropDownShowCall(hasShow:Boolean)
     /**
      * 下拉框更新ui
      */

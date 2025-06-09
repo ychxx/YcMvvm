@@ -27,11 +27,15 @@ open class YcSpinnerAdapter<Data : Any, VbSelect : ViewBinding, VbDropDown : Vie
         mDropDownAdapterItemClick = { item, position, hasDataChange ->
             if (hasDataChange) {
                 mDropDownItemClick?.invoke(item, position)
-                mDropDownShowCall?.invoke(mSelectItemView!!, false)
+//                mDropDownShowCall?.invoke(mSelectItemView!!, false)
                 mSelectItemOnUpdate?.invoke(mSelectItemView!!, position, item)
             }
             dismissDropdown()
         }
+    }
+
+    override fun spDropDownShowCall(hasShow: Boolean) {
+        mDropDownShowCall?.invoke(mSelectItemView!!, hasShow)
     }
 
     override fun getListAdapter(): ListAdapter {
@@ -58,12 +62,12 @@ open class YcSpinnerAdapter<Data : Any, VbSelect : ViewBinding, VbDropDown : Vie
     }
 
     private fun dismissDropdown() {
-        mDropDownShowCall?.invoke(mSelectItemView!!, false)
+//        mDropDownShowCall?.invoke(mSelectItemView!!, false)
         mYcSpinner?.dismissDropdown()
     }
 
     private fun showDropdown() {
-        mDropDownShowCall?.invoke(mSelectItemView!!, true)
+//        mDropDownShowCall?.invoke(mSelectItemView!!, true)
         mYcSpinner?.showDropdown()
     }
 

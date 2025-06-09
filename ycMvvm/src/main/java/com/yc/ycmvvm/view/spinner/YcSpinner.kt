@@ -5,19 +5,12 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ListView
 import androidx.appcompat.widget.ListPopupWindow
-import com.yc.ycmvvm.R
-import com.yc.ycmvvm.exception.YcException
-import com.yc.ycmvvm.extension.ycLogE
 
 open class YcSpinner @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : FrameLayout(context, attrs), YcISpinner {
-    init {
-        setPadding(0, 0, 0, 0)
-    }
-
+    override var mShowCall: ((hasShow: Boolean) -> Unit)? = null
     override fun getViewGroup(): ViewGroup {
         return this
     }
@@ -29,8 +22,6 @@ open class YcSpinner @JvmOverloads constructor(
     }
 
     override fun showDropdown() {
-        ycLogE("showDropdown" + mPop.anchorView!!.height)
-        ycLogE("SelectItemView" + mAdapter!!.getSelectItemView().root.height)
         mPop.show()
     }
 
@@ -47,6 +38,12 @@ open class YcSpinner @JvmOverloads constructor(
         adapter.onAttachedToSpinnerView(this)
         removeAllViews()
         addView(adapter.getSelectItemView().root, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        mShowCall = { hasShow ->
+            adapter.spDropDownShowCall(hasShow)
+        }
+        mPop.setOnDismissListener {
+            adapter.spDropDownShowCall(false)
+        }
         mPop.setAdapter(adapter.getListAdapter())
         this.post {
             mPop.setDropDownGravity(Gravity.BOTTOM)
@@ -71,7 +68,7 @@ open class YcSpinner @JvmOverloads constructor(
         override fun show() {
             inputMethodMode = INPUT_METHOD_NEEDED
             super.show()
+            spinnerView.mShowCall?.invoke(true)
         }
-
     }
 }
