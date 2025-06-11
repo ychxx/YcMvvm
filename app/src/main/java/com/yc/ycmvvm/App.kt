@@ -14,7 +14,7 @@ import com.yc.ycmvvm.utils.YcCameraXProvider
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        YcInit.mInstance.initAll( this, hasLogShow = true, retrofitConfig = YcRetrofitUtil.YcRetrofitConfig(""))
+        YcInit.mInstance.initAll( this, hasLogShow = true, retrofitConfig = YcRetrofitUtil.YcRetrofitConfig("http://www.yc.com"))
         val param = HyperLPRParameter()
         param.setDetLevel(HyperLPR3.DETECT_LEVEL_LOW)
         param.setMaxNum(1)
