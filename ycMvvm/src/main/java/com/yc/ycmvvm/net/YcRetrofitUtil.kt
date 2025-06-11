@@ -1,6 +1,8 @@
 package com.yc.ycmvvm.net
 
 import com.yc.ycmvvm.config.YcInit
+import com.yc.ycmvvm.data.constans.YcNetErrorCode
+import com.yc.ycmvvm.exception.YcException
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -15,8 +17,9 @@ import java.util.concurrent.TimeUnit
  */
 class YcRetrofitUtil private constructor(val config: YcRetrofitConfig) {
     companion object {
-        var defaultConfig = YcRetrofitConfig("", 60, mutableListOf())
-        val Instance = createRetrofit(defaultConfig)
+        lateinit var defaultConfig: YcRetrofitConfig
+        val Instance by lazy { createRetrofit(defaultConfig) }
+
         fun <T> createRetrofitAndGetApiService(service: Class<T>, config: YcRetrofitConfig = defaultConfig): T {
             return YcRetrofitUtil(config).getApiService(service)
         }
