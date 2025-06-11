@@ -1,6 +1,9 @@
 package com.yc.ycmvvm.view
 
+import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.AttributeSet
 import android.util.Log
 import android.view.Surface
@@ -15,6 +18,7 @@ import androidx.camera.core.CameraXConfig
 import androidx.camera.core.ExperimentalLensFacing
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.core.UseCaseGroup
@@ -201,5 +205,48 @@ open class YcCameraX : FrameLayout {
         mCamera = mCameraProvider.bindToLifecycle((context as LifecycleOwner), mCameraSelector, useCaseGroup)
     }
 
+    //TODO 待验证
+    fun imageCapture(
+        context: Context,
+        fileName: String,
+        callback: (uri: Uri) -> Unit,
+        callFail: (e: Exception) -> Unit
+    ) {
+        // 创建图片存储的ContentValues
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.P) {
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/YourAppName/")
+            }
+        }
+
+        // 创建输出选项
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(
+            context.contentResolver,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            contentValues
+        ).build()
+
+        // 执行拍照
+        imageCapture.takePicture(
+            outputOptions,
+            ContextCompat.getMainExecutor(context),
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    outputFileResults.savedUri?.let {
+                        callback.invoke(it)
+                    } ?: run {
+                        callFail.invoke(RuntimeException("Saved URI is null"))
+                    }
+                }
+
+                override fun onError(exception: ImageCaptureException) {
+                    callFail.invoke(exception)
+                    ycLogE("拍照失败: ${exception.message}")
+                }
+            }
+        )
+    }
 }
 typealias YcAnalyzer = (luma: ImageProxy) -> Unit

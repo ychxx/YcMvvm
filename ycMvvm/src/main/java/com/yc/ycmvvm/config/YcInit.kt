@@ -55,11 +55,6 @@ class YcInit private constructor() {
      */
     var mImgIdResLoading: Int = R.drawable.yc_loading
 
-    /**
-     * 网络请求相关配置
-     */
-    var mYcRetrofitConfig: YcRetrofitUtil.YcRetrofitConfig? = null
-
 
     /**
      * 创建一个替换布局（用于不一致时变换）
@@ -96,7 +91,7 @@ class YcInit private constructor() {
      * 需在onCreate里初始化的
      */
     fun initImmediately(app: Application, defaultSaveDirPath: String = app.filesDir.path + File.separator, retrofitConfig: YcRetrofitUtil.YcRetrofitConfig) {
-        mYcRetrofitConfig = retrofitConfig
+        YcRetrofitUtil.defaultConfig = retrofitConfig
         mApplication = app
         mDefaultSaveDirPath = defaultSaveDirPath
     }

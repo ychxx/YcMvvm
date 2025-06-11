@@ -67,19 +67,18 @@ open class YcBaseViewModel : ViewModel() {
         }
     }.flowOn(Dispatchers.IO)
 
-    protected suspend fun <T> Flow<YcResult<T>>.ycCollect(
-        handle: (cause: Throwable) -> YcException? = { ex -> errHandle(ex) },
-        collector: FlowCollector<YcResult<T>>
-    ) {
-        this.catch {
-            it.printStackTrace()
-            val result = handle.invoke(it)
-            if (result != null) {
-                emit(YcResult.Fail(result))
+    protected inline fun <Data> Flow<Data>.ycCollect(crossinline block: (Data) -> Unit) {
+        viewModelScope.launch {
+            this@ycCollect.collect {
+                block.invoke(it)
             }
-        }.collect(collector)
+        }
     }
 
+    /**
+     * 异常处理
+     * @return YcException? 为空时，不执行业务中的异常捕获
+     */
     open fun errHandle(ex: Throwable): YcException? {
         return ex.toYcException()
     }
@@ -91,13 +90,6 @@ open class YcBaseViewModel : ViewModel() {
         }
     }
 
-    protected inline fun <Data> Flow<Data>.ycCollect(crossinline block: (Data) -> Unit) {
-        viewModelScope.launch {
-            this@ycCollect.collect {
-                block.invoke(it)
-            }
-        }
-    }
 
     /**
      * 冷流开始时，显示加载框

@@ -13,12 +13,16 @@ import java.util.concurrent.TimeUnit
  * Date: 2021/6/8 10:45
  * UseDes:网络请求
  */
-class YcRetrofitUtil private constructor() {
+class YcRetrofitUtil private constructor(val config: YcRetrofitConfig) {
     companion object {
-        val Instance = RetrofitUtilHolder.holder
+        var defaultConfig = YcRetrofitConfig("", 60, mutableListOf())
+        val Instance = createRetrofit(defaultConfig)
+        fun <T> createRetrofitAndGetApiService(service: Class<T>, config: YcRetrofitConfig = defaultConfig): T {
+            return YcRetrofitUtil(config).getApiService(service)
+        }
 
-        fun <T> createRetrofitAndGetApiService(service: Class<T>, url: String): T {
-            return YcRetrofitUtil().createRetrofit(url).create(service)
+        fun createRetrofit(config: YcRetrofitConfig): YcRetrofitUtil {
+            return YcRetrofitUtil(config)
         }
     }
 
@@ -31,44 +35,41 @@ class YcRetrofitUtil private constructor() {
         /**
          * 超时时间（单位秒）
          */
-        val timeout: Int = 60,
+        val timeout: Long = 60,
         /**
          * retrofit的过滤器
          */
         val interceptor: MutableList<Interceptor> = mutableListOf()
     )
 
-    private object RetrofitUtilHolder {
-        val holder = YcRetrofitUtil()
+    private val mRetrofit: Retrofit
+
+    init {
+        mRetrofit = createRetrofit()
     }
 
-    private var mRetrofit: Retrofit? = null
     private fun createClient(): OkHttpClient {
         return OkHttpClient.Builder().apply {
-            for (interceptor in YcInit.mInstance.mYcRetrofitConfig!!.interceptor) {
-                addInterceptor(interceptor)
+            config.interceptor.forEach {
+                addInterceptor(it)
             }
             addInterceptor(YcInterceptorLog())
-            connectTimeout(60, TimeUnit.SECONDS)
-            writeTimeout(60, TimeUnit.SECONDS)
-            readTimeout(60, TimeUnit.SECONDS)
+            connectTimeout(config.timeout, TimeUnit.SECONDS)
+            writeTimeout(config.timeout, TimeUnit.SECONDS)
+            readTimeout(config.timeout, TimeUnit.SECONDS)
         }.build()
     }
 
-    private fun createRetrofit(baseUrl: String = YcInit.mInstance.mYcRetrofitConfig!!.mDefaultBaseUrl): Retrofit {
+    private fun createRetrofit(): Retrofit {
         return Retrofit.Builder()
             .client(createClient())
-            .baseUrl(baseUrl)
+            .baseUrl(config.mDefaultBaseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
             .build()
     }
 
-
-    fun <T> getApiService(service: Class<T>?): T {
-        if (mRetrofit == null) {
-            mRetrofit = createRetrofit()
-        }
-        return mRetrofit!!.create(service)
+    fun <T> getApiService(service: Class<T>): T {
+        return mRetrofit.create(service)
     }
 }

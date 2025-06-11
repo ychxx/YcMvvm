@@ -83,12 +83,10 @@ class YcDownload(val mConfig: YcDownloadConfig) {
 
     private var callback: Callback.Cancelable? = null
 
-    @YcDownLoadState
-    var mDownloadState: Int = YcDownLoadState.DOWNLOAD_NOT_STARTED
-        private set
+    var mDownloadState: YcDownLoadState = YcDownLoadState.DownloadNotStarted
 
     fun stop() {
-        mDownloadState = YcDownLoadState.DOWNLOAD_NOT_STARTED
+        mDownloadState = YcDownLoadState.DownloadNotStarted
         callback?.apply {
             if (!isCancelled) {
                 cancel()
@@ -109,7 +107,7 @@ class YcDownload(val mConfig: YcDownloadConfig) {
                     onError(YcException(400, "文件为空!"), false)
                 } else {
                     ycLogE("下载成功：${mConfig.saveFilePath}")
-                    mDownloadState = YcDownLoadState.DOWNLOAD_SUCCESS
+                    mDownloadState = YcDownLoadState.DownloadSuccess
                     mConfig.progressDialog?.apply {
                         progress = max
                         dismiss()
@@ -122,7 +120,7 @@ class YcDownload(val mConfig: YcDownloadConfig) {
             override fun onError(ex: Throwable, isOnCallback: Boolean) {
                 ex.printStackTrace()
                 ycLogE("下载失败：${mConfig.saveFilePath}")
-                mDownloadState = YcDownLoadState.DOWNLOAD_FAIL
+                mDownloadState = YcDownLoadState.DownloadFail
                 mConfig.progressDialog?.dismiss()
                 YcFileUtils.delFile(mConfig.saveFilePath)
                 mConfig.onFail?.invoke("下载失败")
@@ -130,7 +128,7 @@ class YcDownload(val mConfig: YcDownloadConfig) {
 
             override fun onCancelled(cex: Callback.CancelledException?) {
                 ycLogE("取消下载：${mConfig.saveFilePath}")
-                mDownloadState = YcDownLoadState.DOWNLOAD_FAIL
+                mDownloadState = YcDownLoadState.DownloadFail
                 mConfig.progressDialog?.dismiss()
                 YcFileUtils.delFile(mConfig.saveFilePath)
                 mConfig.onFail?.invoke("下载被取消了")
@@ -155,7 +153,7 @@ class YcDownload(val mConfig: YcDownloadConfig) {
             override fun onLoading(total: Long, current: Long, isDownloading: Boolean) {
                 // 当前的下载进度和文件总大小
                 ycLogDSimple("正在下载中......total：$total current：$current")
-                mDownloadState = YcDownLoadState.DOWNLOADING
+                mDownloadState = YcDownLoadState.Downloading
                 mConfig.onLoading?.invoke(total, current)
                 mConfig.progressDialog?.apply {
                     max = total.toInt()

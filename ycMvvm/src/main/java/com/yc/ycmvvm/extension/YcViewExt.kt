@@ -489,51 +489,8 @@ fun ImageView.ycLoadImageFileCircle(imageFile: File, roundingRadius: Int) {
  * 加载资源图片
  */
 fun ImageView.ycLoadImageRes(@DrawableRes imgRes: Int) {
-    Glide.with(context)
-        .load(imgRes)
-        .into(this)
+    this.setImageResource(imgRes)
 }
-
-
-/**
- * 加载资源图片圆角
- */
-fun ImageView.ycLoadImageResCircle(@DrawableRes imgRes: Int) {
-    Glide.with(context)
-        .load(imgRes)
-        .circleCrop()
-        .into(this)
-}
-
-/**
- * 加载资源图片圆角图片(自定义弧度)
- * roundingRadius：px
- */
-fun ImageView.ycLoadImageResCircle(
-    @DrawableRes imgRes: Int,
-    roundingRadius: Int,
-    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
-    errorImg: Int = YcInit.mInstance.mImgIdResFail,
-) {
-    Glide.with(context)
-        .load(imgRes)
-        .transform(CenterCrop(), RoundedCorners(roundingRadius))
-        .into(this)
-}
-
-fun ImageView.ycLoadImageResCircleCenterInside(
-    @DrawableRes imgRes: Int, roundingRadius: Int,
-    placeholderImg: Int = YcInit.mInstance.mImgIdResLoading,
-    errorImg: Int = YcInit.mInstance.mImgIdResFail,
-) {
-    Glide.with(context)
-        .load(imgRes)
-        .transform(CenterInside(), RoundedCorners(roundingRadius))
-        .placeholder(placeholderImg)
-        .error(errorImg)
-        .into(this)
-}
-
 
 fun ImageView.ycLoadImageViewTarget(
     url: String,
