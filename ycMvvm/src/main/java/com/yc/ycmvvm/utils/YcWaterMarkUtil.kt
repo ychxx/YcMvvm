@@ -45,7 +45,6 @@ object YcWaterMarkUtil {
             options.inJustDecodeBounds = true
             BitmapFactory.decodeFile(sourceFile.absolutePath, options)
 
-
             // 计算采样率
             options.inSampleSize = calculateInSampleSize(options, 2048, 2048)
             options.inJustDecodeBounds = false
