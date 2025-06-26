@@ -161,5 +161,6 @@ open class YcRecyclerViewAdapter<Data : Any, VB : ViewBinding>(protected val cre
             return
         }
         mData[position] = data
+        notifyItemChanged(position)
     }
 }

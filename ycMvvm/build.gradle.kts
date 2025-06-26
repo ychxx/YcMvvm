@@ -63,6 +63,7 @@ dependencies {
 
     /**--okHttp-logging-interceptor 日志拦截器--**/
     api(libs.logging.interceptor)
+    /**--权限申请--**/
     implementation(libs.xxpermissions)
     /**-- Lifecycle components 生命周期管理--**/
     api(libs.androidx.lifecycle.lifecycle.viewmodel.ktx4)
