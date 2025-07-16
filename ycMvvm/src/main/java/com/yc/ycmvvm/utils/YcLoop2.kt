@@ -5,11 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import com.yc.ycmvvm.extension.ycIsTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicInteger
 
 class YcLoop2 {
@@ -44,6 +47,7 @@ class YcLoop2 {
                         start(true)
                     }
                 } catch (e: Exception) {
+                    coroutineContext.ensureActive()
                     if (mState.get() != -1 && isActive) {
                         start(true)
                     }
@@ -65,4 +69,29 @@ class YcLoop2 {
             e.printStackTrace()
         }
     }
+}
+
+var i = 1
+fun test(): Job {
+    return GlobalScope.launch {
+        while (true) {
+            try {
+                System.out.println("--${i++}\n")   // delay 放外面，取消时直接抛 CancellationException
+                delay(1000)
+            } catch (e: Exception) {
+                coroutineContext.ensureActive()
+                e.printStackTrace()
+                System.out.println("err")
+            }
+        }
+    }
+}
+
+suspend fun main() {
+    val job = test()
+    delay(10000)
+    job.cancel()
+//    while (true) {
+//        println("-1-")
+//    }
 }
