@@ -3,6 +3,7 @@ package com.yc.ycmvvm.utils
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import java.lang.ref.WeakReference
 import java.util.*
 
 /**
@@ -11,8 +12,8 @@ import java.util.*
  * UseDes:Activity管理类
  */
 object YcActivityManager {
-    private val mActivityStack: Stack<FragmentActivity> by lazy {
-        Stack<FragmentActivity>()
+    private val mActivityStack: Stack<WeakReference<FragmentActivity>> by lazy {
+        Stack<WeakReference<FragmentActivity>>()
     }
 
     /**
@@ -23,21 +24,31 @@ object YcActivityManager {
         activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onDestroy(owner: LifecycleOwner) {
                 super.onDestroy(owner)
-                mActivityStack.remove(activity)
+                cleanStack()
             }
         })
-        mActivityStack.push(activity)
+        mActivityStack.push(WeakReference(activity))
     }
-
+    /**
+     * 清理已被回收的Activity引用
+     */
+    private fun cleanStack() {
+        val iterator = mActivityStack.iterator()
+        while (iterator.hasNext()) {
+            val ref = iterator.next()
+            // 移除已被GC回收或Activity已销毁的引用
+            if (ref.get() == null || ref.get()?.isDestroyed == true) {
+                iterator.remove()
+            }
+        }
+    }
     /**
      * 从堆栈中移除指定的Activity
      */
     @JvmStatic
     fun finishActivity(activity: Class<FragmentActivity>) {
-        for (itemActivity in mActivityStack) {
-            if (activity == itemActivity::class.java) {
-                itemActivity.finish()
-            }
+        mActivityStack.forEach { ref ->
+            ref.get()?.takeIf { it::class.java == activity }?.finish()
         }
     }
 
@@ -46,9 +57,10 @@ object YcActivityManager {
      */
     @JvmStatic
     fun finishAllActivity() {
-        for (activity in mActivityStack) {
-            activity.finish()
+        mActivityStack.forEach { ref ->
+            ref.get()?.finish()
         }
+        mActivityStack.clear()
     }
 
     /**
@@ -56,10 +68,8 @@ object YcActivityManager {
      */
     @JvmStatic
     fun <T> finishOthersActivity(activityClass: Class<T>) {
-        for (itemActivity in mActivityStack) {
-            if (activityClass != itemActivity.javaClass) {
-                itemActivity.finish()
-            }
+        mActivityStack.forEach { ref ->
+            ref.get()?.takeIf { it.javaClass != activityClass }?.finish()
         }
     }
 
@@ -68,7 +78,9 @@ object YcActivityManager {
      */
     @JvmStatic
     fun getCurrentActivity(): FragmentActivity? {
-        return if (!mActivityStack.isEmpty()) mActivityStack.lastElement() else null
+        return mActivityStack.lastOrNull { ref ->
+            ref.get() != null && !ref.get()!!.isDestroyed
+        }?.get()
     }
 
     /**
@@ -76,7 +88,7 @@ object YcActivityManager {
      */
     @JvmStatic
     fun finishCurrentActivity() {
-        mActivityStack.removeLastOrNull()?.finish()
+        mActivityStack.pop()?.get()?.finish()
     }
 
     /**
@@ -84,7 +96,9 @@ object YcActivityManager {
      */
     @JvmStatic
     fun <T> hasExist(activityClass: Class<T>): Boolean {
-        return mActivityStack.any { it.javaClass == activityClass }
+        return mActivityStack.any { ref ->
+            ref.get()?.javaClass == activityClass
+        }
     }
     /**
      * 退出app
@@ -94,6 +108,6 @@ object YcActivityManager {
         try {
             finishAllActivity()
             android.os.Process.killProcess(android.os.Process.myPid())
-        }catch (e:Exception){}
+        }catch (_:Exception){}
     }
 }

@@ -70,28 +70,3 @@ class YcLoop2 {
         }
     }
 }
-
-var i = 1
-fun test(): Job {
-    return GlobalScope.launch {
-        while (true) {
-            try {
-                System.out.println("--${i++}\n")   // delay 放外面，取消时直接抛 CancellationException
-                delay(1000)
-            } catch (e: Exception) {
-                coroutineContext.ensureActive()
-                e.printStackTrace()
-                System.out.println("err")
-            }
-        }
-    }
-}
-
-suspend fun main() {
-    val job = test()
-    delay(10000)
-    job.cancel()
-//    while (true) {
-//        println("-1-")
-//    }
-}

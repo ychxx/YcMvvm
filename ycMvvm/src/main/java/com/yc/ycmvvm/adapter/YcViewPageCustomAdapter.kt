@@ -7,13 +7,17 @@ import androidx.lifecycle.Lifecycle
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yc.ycmvvm.extension.ycGet
+import java.lang.ref.WeakReference
 
 open class YcViewPageCustomAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, private val createCustomView: () -> View) :
     YcViewPageAdapter(fragmentManager, lifecycle) {
     open var tabUpdate: ((customView: View, hasSelect: Boolean, tabName: String?, position: Int) -> Unit)? = null
     override fun <T : Fragment> setFragmentList(newFragmentList: List<T>, tabNameList: List<String>, setSelected: Int?) {
         this.fragmentList.clear()
-        this.fragmentList.addAll(newFragmentList)
+        this.fragmentList.forEach {
+            it.get()?.onDestroy()
+        }
+        this.fragmentList.addAll(newFragmentList.map { WeakReference(it) })
         this.tabLayout!!.removeAllTabs()
         tabLayout!!.clearOnTabSelectedListeners()
         tabLayout!!.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -32,7 +36,8 @@ open class YcViewPageCustomAdapter(fragmentManager: FragmentManager, lifecycle: 
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
-        TabLayoutMediator(tabLayout!!, viewPage!!) { tab, position ->
+        mediator?.detach() // 解绑旧实例
+        mediator = TabLayoutMediator(tabLayout!!, viewPage!!) { tab, position ->
             try {
                 if (tab.customView == null) {
                     tab.setCustomView(createCustomView.invoke())
@@ -44,7 +49,6 @@ open class YcViewPageCustomAdapter(fragmentManager: FragmentManager, lifecycle: 
                 e.printStackTrace()
             }
         }.also { mediator ->
-            mediator.detach() // 解除旧绑定
             mediator.attach() // 重新绑定
         }
         this.tabLayout?.post {
