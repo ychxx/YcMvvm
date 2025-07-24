@@ -8,10 +8,14 @@ import com.yc.ycmvvm.config.YcInit
 import com.yc.ycmvvm.databinding.MainAcBinding
 import com.yc.ycmvvm.databinding.MainItemBinding
 import com.yc.ycmvvm.extension.ycInitLinearLayoutManage
+import com.yc.ycmvvm.extension.ycLogE
 import com.yc.ycmvvm.extension.ycShowToast
 import com.yc.ycmvvm.extension.ycToNoEmpty
 import com.yc.ycmvvm.net.download.YcDownload
 import com.yc.ycmvvm.utils.YcInstallUtil
+import com.yc.ycmvvm.utils.YcPhoneUtils.getDeviceUniqueId
+import com.yc.ycmvvm.utils.permission.XXPermissionUtil
+import com.yc.ycmvvm.utils.permission.YcPermissionUtil
 
 class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
 
@@ -54,6 +58,7 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
             )
         )
         adapter.mItemClick = {
+            ycLogE("设备唯一id：${getDeviceUniqueId()}")
             when (it) {
                 ToAc.DownLoadApk -> {
                     val url = "https://pub-parking.zrzkwlw.com/2025-04-22/5676d59b9a1158d63e591969fec90f01.apk"
@@ -66,5 +71,6 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
                 else -> it.to(this@MainActivity)
             }
         }
+
     }
 }

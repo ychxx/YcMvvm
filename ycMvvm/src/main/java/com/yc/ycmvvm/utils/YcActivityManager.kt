@@ -29,6 +29,7 @@ object YcActivityManager {
         })
         mActivityStack.push(WeakReference(activity))
     }
+
     /**
      * 清理已被回收的Activity引用
      */
@@ -42,6 +43,7 @@ object YcActivityManager {
             }
         }
     }
+
     /**
      * 从堆栈中移除指定的Activity
      */
@@ -83,6 +85,11 @@ object YcActivityManager {
         }?.get()
     }
 
+    @JvmStatic
+    fun <T> getActivity(activityClass: Class<T>): FragmentActivity? {
+        return mActivityStack.find { it.get()?.javaClass == activityClass }?.get()
+    }
+
     /**
      * 关闭当前activity
      */
@@ -100,14 +107,16 @@ object YcActivityManager {
             ref.get()?.javaClass == activityClass
         }
     }
+
     /**
      * 退出app
      */
     @JvmStatic
-    fun  existApp(){
+    fun existApp() {
         try {
             finishAllActivity()
             android.os.Process.killProcess(android.os.Process.myPid())
-        }catch (_:Exception){}
+        } catch (_: Exception) {
+        }
     }
 }
