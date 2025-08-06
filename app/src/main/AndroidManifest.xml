@@ -4,6 +4,7 @@
 
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 照相权限 -->
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -39,6 +40,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YcMvvm"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".ui.MainActivity"
@@ -55,6 +57,7 @@
         <activity android:name=".ui.TestPickerViewAc" />
         <activity android:name=".ui.TestSpecialViewAc" />
         <activity android:name=".ui.TestSpinnerAc" />
+        <activity android:name=".ui.TestNetAc" />
 
 <!--        <provider-->
 <!--            android:name=".utils.YcCameraXProvider"-->

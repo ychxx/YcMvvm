@@ -2,17 +2,15 @@ package com.yc.ycmvvm.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.media.MediaDrm
 import android.net.ConnectivityManager
 import android.os.Build
 import android.provider.Settings
-import android.telephony.TelephonyManager
 import androidx.annotation.RequiresPermission
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.edit
 import com.yc.ycmvvm.config.YcInit
+import com.yc.ycmvvm.data.db.YcSharedPreferences
 import com.yc.ycmvvm.extension.ycIsEmpty
 import com.yc.ycmvvm.extension.ycTry
-import java.io.Serial
 
 object YcPhoneUtils {
     /**
@@ -33,16 +31,25 @@ object YcPhoneUtils {
     @SuppressLint("MissingPermission", "HardwareIds")
     fun getDeviceUniqueId(context: Context = YcInit.mInstance.mApplication): String {
         var deviceUniqueId = ""
-        ycTry {
-            val androidId = Settings.System.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
-            if (!androidId.ycIsEmpty() && androidId != "9774d56d682e549c") {
-                deviceUniqueId = androidId
+        val deviceIdDb = YcSharedPreferences.ycSp.getString(YcSharedPreferences.YC_SP_KEY_DEVICE_ID, "")
+        if (deviceIdDb.isNullOrBlank()) {
+            ycTry {
+                val androidId = Settings.System.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+                if (!androidId.ycIsEmpty() && androidId != "9774d56d682e549c") {
+                    deviceUniqueId = androidId
+                }
             }
-        }
-        return if (deviceUniqueId.ycIsEmpty()) {
-            "9774d56d682e549c"
+            val deviceIdNew = if (deviceUniqueId.ycIsEmpty()) {
+                "9774d56d682e549c"
+            } else {
+                YcEncryptionUtils.toMD5(deviceUniqueId + Build.BRAND + Build.MODEL)
+            }
+            YcSharedPreferences.ycSp.edit(commit = true) {
+                putString(YcSharedPreferences.YC_SP_KEY_DEVICE_ID, deviceIdNew)
+            }
+            return deviceIdNew
         } else {
-            YcEncryptionUtils.toMD5(deviceUniqueId + Build.BRAND + Build.MODEL)
+            return deviceIdDb
         }
     }
 }

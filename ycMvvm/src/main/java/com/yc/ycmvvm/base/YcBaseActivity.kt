@@ -42,6 +42,10 @@ abstract class YcBaseActivity<VB : ViewBinding>(private val createVB: ((LayoutIn
         YcActivityManager.addActivity(this)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        YcActivityManager.finishActivity(thi)
+    }
     fun getContext(): Context {
         return this
     }

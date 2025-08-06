@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/proRdb"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:gravity="center"
+            android:text="正式"
+            android:textColor="#333333"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/testRdb"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:checked="false"
+            android:gravity="center"
+            android:text="测试"
+            android:textColor="#333333"
+            android:textSize="14sp" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/plateCodeEdt"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:hint="请输入运营商编码" />
+
+    <EditText
+        android:id="@+id/userNameEdt"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:hint="请输入登录账号" />
+
+    <EditText
+        android:id="@+id/userPwsEdt"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:hint="请输入密码" />
+
+    <Button
+        android:id="@+id/loginOutBtn"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginHorizontal="64dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/yc_blue"
+        android:text="一键退出"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/yc_blue"
+        app:cornerRadius="8dp" />
+</LinearLayout>

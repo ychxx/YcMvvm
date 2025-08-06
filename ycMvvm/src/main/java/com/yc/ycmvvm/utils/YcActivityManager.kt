@@ -54,6 +54,16 @@ object YcActivityManager {
         }
     }
 
+    @JvmStatic
+    fun finishActivity(activity: FragmentActivity) {
+        try {
+            mActivityStack.forEach { ref ->
+                ref.get()?.takeIf { it == activity }?.finish()
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+    }
     /**
      * 从堆栈中移除所有Activity
      */
