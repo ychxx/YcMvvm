@@ -8,7 +8,6 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.CameraXConfig
 import com.hyperai.hyperlpr3.HyperLPR3
 import com.hyperai.hyperlpr3.bean.HyperLPRParameter
-import com.marytts.android.link.MaryLink
 import com.yc.ycmvvm.config.YcInit
 import com.yc.ycmvvm.net.YcRetrofitUtil
 import com.yc.ycmvvm.utils.YcCameraXProvider
@@ -22,7 +21,6 @@ class App : Application() {
         param.setMaxNum(1)
         param.setRecConfidenceThreshold(0.85f)
         HyperLPR3.getInstance().init(this, param)
-        MaryLink.load(this)
     }
 
 

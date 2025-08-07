@@ -82,5 +82,4 @@ dependencies {
     implementation("com.github.ychxx:Android-PickerView:1.9")
 
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
-    implementation ("com.marytts.android:marylib:1.0.1")
 }
