@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="yc_black">#FF000000</color>
+    <color name="yc_white">#FFFFFFFF</color>
+    <color name="yc_transparent">#00000000</color>
+    <color name="yc_blue">#2288FB</color>
+    <color name="yc_gray">#F8F8F8</color>
+
+    <!-- 车牌输入框 边框颜色 -->
+    <color name="yc_plate_num_border_blue">#006DFF</color>
+    <color name="yc_plate_num_border_green">#44EC65</color>
+    <color name="yc_plate_num_border_yellow">#FFBE01</color>
+    <color name="yc_plate_num_border_white">#333333</color>
+    <color name="yc_plate_num_border_black">#333333</color>
+    <color name="yc_plate_num_border_select_un">#C7C7C7</color>
+
+    <!-- 车牌输入框 背景颜色 -->
+    <color name="yc_plate_num_bg_other">#FFFFFF</color>
+    <color name="yc_plate_num_bg_black">#333333</color>
+
+    <!-- 车牌输入框 字体颜色 -->
+    <color name="yc_plate_num_text_other">#333333</color>
+    <color name="yc_plate_num_text_black">#FFFFFF</color>
+</resources>

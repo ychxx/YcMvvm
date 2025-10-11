@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="ycBg" format="reference|color" />
+    <attr name="ycBg2" format="reference|color" />
+    <attr name="ycBg3" format="reference|color" />
+    <attr name="ycStrokeColor" format="reference|color" />
+    <attr name="ycStrokeColor2" format="reference|color" />
+    <attr name="ycStrokeColor3" format="reference|color" />
+    <attr name="ycTextColor" format="reference|color" />
+    <attr name="ycTextColor2" format="reference|color" />
+    <attr name="ycTextColor3" format="reference|color" />
+
+    <attr name="ycProgress" format="float" />
+    <attr name="ycText" format="string|reference" />
+    <attr name="ycTextSize" format="dimension" />
+    <attr name="ycType" format="integer" />
+    <declare-styleable name="YcRingView">
+        <attr name="ycBg" />
+        <attr name="ycRingColorEffective" format="reference|color" />
+        <attr name="ycRingColorBg" format="reference|color" />
+        <attr name="ycRingWithRate" format="float" />
+        <attr name="ycProgress" />
+        <attr name="ycText" />
+        <attr name="ycTextColor" />
+        <attr name="ycTextSize" />
+        <attr name="ycHasTextBold" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="YcMaterialButton">
+        <attr name="ycBg" />
+        <attr name="ycBg2" />
+        <attr name="ycBg3" />
+        <attr name="ycTextColor" />
+        <attr name="ycTextColor2" />
+        <attr name="ycTextColor3" />
+        <attr name="ycStrokeColor" />
+        <attr name="ycStrokeColor2" />
+        <attr name="ycStrokeColor3" />
+        <attr name="ycType" />
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/test0Btn"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:text="测试0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/test1Btn"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:text="测试1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/test2Btn"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:text="测试2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/test3Btn"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:text="测试3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</LinearLayout>
+
