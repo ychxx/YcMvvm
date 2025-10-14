@@ -81,7 +81,6 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
                 ToAc.TestSpecialView,
                 ToAc.TestSpinner,
                 ToAc.TestNet,
-                ToAc.TestTextView,
                 ToAc.Test,
                 ToAc.TestQr
             )
