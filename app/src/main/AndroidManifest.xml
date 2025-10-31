@@ -57,6 +57,7 @@
         <activity android:name=".ui.TestNetAc" />
         <activity android:name=".ui.TestAc" />
         <activity android:name=".ui.TestQrAc" />
+        <activity android:name=".ui.TestRecycleViewAc" />
 
         <activity
             android:name=".ui.YcCompressAc"

@@ -48,7 +48,10 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
     }
 
     sealed class ToAc(val name: String, val to: (context: Context) -> Unit) {
-        data object InputBox : ToAc("测试输入框", { InputBoxAc.toAc(it) })
+        data object InputBox : ToAc("测试输入框", {
+            InputBoxAc.toAc(it)
+        })
+
         data object TestCameraX : ToAc("测试CameraX", { TestCameraXAc.toAc(it) })
         data object TestCamera2 : ToAc("测试Camera2", { TestCamera2Ac.toAc(it) })
         data object TestVideoX : ToAc("测试视频播放", { TestVideoXAc.toAc(it) })
@@ -59,6 +62,8 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
         data object TestNet : ToAc("测试网络接口", { TestNetAc.toAc(it) })
         data object Test : ToAc("测试", { TestAc.toAc(it) })
         data object TestQr : ToAc("二维码", { TestQrAc.toAc(it) })
+        data object TestRecycleView : ToAc("列表", { TestRecycleViewAc.toAc(it) })
+
     }
 
     private lateinit var mYcInstallUtil: YcInstallUtil
@@ -82,18 +87,16 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
                 ToAc.TestSpinner,
                 ToAc.TestNet,
                 ToAc.Test,
-                ToAc.TestQr
+                ToAc.TestQr,
+                ToAc.TestRecycleView,
             )
         )
         adapter.mItemClick = {
             ycLogE("设备唯一id：${getDeviceUniqueId()}")
             when (it) {
                 ToAc.DownLoadApk -> {
-                    lifecycleScope.launch(Dispatchers.IO) {
-
-                    }
+                    lifecycleScope.launch(Dispatchers.IO) {}
                 }
-
                 else -> it.to(this@MainActivity)
             }
         }

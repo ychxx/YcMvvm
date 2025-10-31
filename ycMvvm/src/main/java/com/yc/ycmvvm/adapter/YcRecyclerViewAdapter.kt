@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.yc.ycmvvm.extension.ycLogE
+import okio.`-DeprecatedOkio`.source
+import java.util.Collections
 
 open class YcRecyclerViewAdapter<Data : Any, VB : ViewBinding>(protected val createVB: (LayoutInflater, ViewGroup?, Boolean) -> VB) :
     RecyclerView.Adapter<YcViewHolder<VB>>() {
@@ -109,26 +111,6 @@ open class YcRecyclerViewAdapter<Data : Any, VB : ViewBinding>(protected val cre
         if (isRefresh)
             notifyDataSetChanged()
     }
-
-    fun addOrReleaseOrRemoveLast(data: Data, position: Int) {
-        if (position < mData.size) {
-            mData[position] = data
-            val start = position + 1
-            val end = mData.size - 1
-            for (i in end downTo start) {
-                mData.removeAt(i)
-            }
-            if (end - position > 0) {
-                notifyItemRangeRemoved(start, end - start)
-            } else {
-                notifyItemChanged(position)
-            }
-        } else {
-            mData.add(data)
-            notifyItemChanged(position)
-        }
-    }
-
     fun release(data: Data, position: Int) {
         if (position < mData.size) {
             mData[position] = data
@@ -155,6 +137,7 @@ open class YcRecyclerViewAdapter<Data : Any, VB : ViewBinding>(protected val cre
         }
         notifyItemRangeRemoved(positionStart, positionEnd - positionStart + 1)
     }
+
     fun setData(data: Data, position: Int) {
         if (position < 0 || position >= mData.size) {
             ycLogE("YcRecyclerViewAdapter setData: position=${position} 越界")
