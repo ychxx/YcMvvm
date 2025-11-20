@@ -58,9 +58,9 @@ dependencies {
 
     /**--retrofit  网络请求--**/
     api(libs.squareup.retrofit)
-    implementation(libs.squareup.converter.gson)
-    implementation(libs.retrofit.mock)
-    implementation(libs.squareup.converter.scalars)
+    api(libs.squareup.converter.gson)
+    api(libs.retrofit.mock)
+    api(libs.squareup.converter.scalars)
 
     /**--okHttp-logging-interceptor 日志拦截器--**/
     api(libs.logging.interceptor)

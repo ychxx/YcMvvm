@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import androidx.lifecycle.LifecycleOwner
-import com.elvishew.xlog.BuildConfig
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
 import com.scwang.smart.refresh.footer.ClassicsFooter
@@ -80,7 +79,7 @@ class YcInit private constructor() {
     fun initAll(
         app: Application,
         defaultSaveDirPath: String = app.filesDir.path + File.separator,
-        hasLogShow: Boolean = BuildConfig.DEBUG,
+        hasLogShow: Boolean = true,
         retrofitConfig: YcRetrofitUtil.YcRetrofitConfig
     ) {
         initImmediately(app, defaultSaveDirPath, retrofitConfig)
@@ -99,7 +98,7 @@ class YcInit private constructor() {
     /**
      * 可延迟初始化的
      */
-    fun initLazy(hasLogShow: Boolean = BuildConfig.DEBUG) {
+    fun initLazy(hasLogShow: Boolean = true) {
         XLog.init(LogLevel.ALL)
         x.Ext.init(mApplication)
         setLog(hasLogShow)
