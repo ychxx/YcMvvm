@@ -2,11 +2,13 @@ package com.yc.ycmvvm.utils.permission
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.XXPermissions
+import com.hjq.permissions.permission.base.IPermission
 import com.yc.ycmvvm.utils.YcActivityManager
 import com.yc.ycmvvm.config.YcInit
 import com.yc.ycmvvm.extension.ycLogE
@@ -44,13 +46,9 @@ open class YcPermissionUtil {
     }
 
     private var mXXRequestPermission: XXRequestPermission = XXRequestPermission()
-    fun addPermission(vararg permissions: String) {
+    fun addPermission(vararg permissions: IPermission) {
         permissions.forEach {
-            if (XXPermissionUtil.LOCATION.contains(it)) {
-                mXXRequestPermission.permissionLocation.add(it)
-            } else {
-                mXXRequestPermission.permission.add(it)
-            }
+            mXXRequestPermission.permission.add(it)
         }
     }
 
@@ -68,7 +66,7 @@ open class YcPermissionUtil {
     /**
      * 用户点击“拒绝"回调
      */
-    var mFailCall: ((List<String>) -> Unit) = {
+    var mFailCall: ((List<IPermission>) -> Unit) = {
         mDialog?.apply {
             setMsg("软件运行必要权限申请被拒绝!")
             setLeftBtnText("退出")
@@ -86,18 +84,34 @@ open class YcPermissionUtil {
     /**
      * 用户点击“不再询问"回调
      */
-    var mNeverAskAgainCall: ((List<String>) -> Unit) = {
-        mDialog?.apply {
-            setMsg("权限申请被禁止，请手动开启!")
-            setLeftBtnText("退出")
-            setOnLeftClick {
-                YcActivityManager.finishCurrentActivity()
+    var mNeverAskAgainCall: (() -> Unit) = {
+        val current = YcActivityManager.getCurrentActivity()
+        if (current == null) {
+            mDialog?.apply {
+                setMsg("权限申请被禁止，请手动开启!")
+                setLeftBtnText("退出")
+                setOnLeftClick {
+                    YcActivityManager.finishCurrentActivity()
+                }
+                setRightBtnText("重试")
+                setOnRightClick {
+                    start()
+                }
+                show()
             }
-            setRightBtnText("重试")
-            setOnRightClick {
-                start()
+        } else {
+            mDialog?.apply {
+                setMsg("权限申请被禁止，请手动开启!")
+                setLeftBtnText("前往设置")
+                setOnLeftClick {
+                    XXPermissions.startPermissionActivity(current)
+                }
+                setRightBtnText("重试")
+                setOnRightClick {
+                    start()
+                }
+                show()
             }
-            show()
         }
     }
 
@@ -105,7 +119,6 @@ open class YcPermissionUtil {
      * 申请开始回调
      */
     var mStartCall: (() -> Unit)? = null
-    var mHasDenied: Boolean = false
 
     /**
      * 开始申请权限
@@ -113,81 +126,38 @@ open class YcPermissionUtil {
      * 注：在onCreate之后的生命周期里调用
      */
     open fun start() {
-        mHasDenied = false
         mStartCall?.invoke()
         mXXRequestPermission.hasSuccess = mXXRequestPermission.permission.isEmpty() ||
-                XXPermissions.isGranted(context, mXXRequestPermission.permission)
-        mXXRequestPermission.hasLocationSuccess = mXXRequestPermission.permissionLocation.isEmpty() ||
-                XXPermissions.isGranted(context, mXXRequestPermission.permissionLocation)
+                XXPermissions.isGrantedPermissions(context, mXXRequestPermission.permission)
         if (!mXXRequestPermission.hasSuccess) {
             ycLogE("申请正常权限" + mXXRequestPermission.permission.toString())
             XXPermissions.with(context)
-                .permission(mXXRequestPermission.permission)
-                .request(object : OnPermissionCallback {
-                    override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {
-                        if (allGranted) {
-                            mXXRequestPermission.hasSuccess = true
-                            if (mXXRequestPermission.hasLocationSuccess) {
-                                mSuccessCall?.invoke()
-                            } else {
-                                start()
-                            }
+                .permissions(mXXRequestPermission.permission)
+                .request { grantedList, deniedList ->
+                    val allGranted = deniedList.isEmpty()
+                    if (allGranted) {
+                        mSuccessCall?.invoke()
+                    } else {
+                        val current = YcActivityManager.getCurrentActivity()
+                        val doNotAskAgain = if (current != null) {
+                            XXPermissions.isDoNotAskAgainPermissions(current, deniedList)
                         } else {
-                            if (!mHasDenied)
-                                mFailCall.invoke(permissions)
+                            false
                         }
-                    }
-
-                    override fun onDenied(permissions: MutableList<String>, doNotAskAgain: Boolean) {
-                        mHasDenied = true
                         if (doNotAskAgain) {
-                            mNeverAskAgainCall.invoke(permissions)
+                            mNeverAskAgainCall.invoke()
                         } else {
-                            mFailCall.invoke(permissions)
+                            mFailCall.invoke(deniedList)
                         }
                     }
-                })
-        } else if (!mXXRequestPermission.hasLocationSuccess) {
-            ycLogE("申请定位权限" + mXXRequestPermission.permissionLocation.toString())
-            XXPermissions.with(context)
-                .permission(mXXRequestPermission.permissionLocation)
-                .request(object : OnPermissionCallback {
-                    override fun onGranted(permissions: MutableList<String>, allGranted: Boolean) {
-                        if (allGranted) {
-                            mXXRequestPermission.hasLocationSuccess = true
-                            if (mXXRequestPermission.hasSuccess) {
-                                mSuccessCall?.invoke()
-                            } else {
-                                start()
-                            }
-                        } else {
-                            if (!mHasDenied)
-                                mFailCall.invoke(permissions)
-                        }
-                    }
-
-                    override fun onDenied(permissions: MutableList<String>, doNotAskAgain: Boolean) {
-                        mHasDenied = true
-                        if (doNotAskAgain) {
-                            mNeverAskAgainCall.invoke(permissions)
-                        } else {
-                            mFailCall.invoke(permissions)
-                        }
-                    }
-                })
+                }
         } else {
             mSuccessCall?.invoke()
         }
     }
 
-    /**
-     * 分两次申请权限
-     * 由于XXPermission框架定位权限需要单独申请（否则部分机型会出现失败问题）
-     */
     private data class XXRequestPermission(
-        val permission: ArrayList<String> = arrayListOf(),
+        val permission: ArrayList<IPermission> = arrayListOf(),
         var hasSuccess: Boolean = false,
-        val permissionLocation: ArrayList<String> = arrayListOf(),
-        var hasLocationSuccess: Boolean = false
     )
 }

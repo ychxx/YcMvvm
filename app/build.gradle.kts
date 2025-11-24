@@ -88,4 +88,6 @@ dependencies {
     implementation(libs.com.github.skynet2017.luban2)
     // word、pdf、excel、ppt预览
 //    implementation("com.github.seapeak233:AndroidDocViewer:0.1.3")
+    // 图表
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

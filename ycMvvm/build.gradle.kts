@@ -65,7 +65,9 @@ dependencies {
     /**--okHttp-logging-interceptor 日志拦截器--**/
     api(libs.logging.interceptor)
     /**--权限申请--**/
-    implementation(libs.xxpermissions)
+    api(libs.xxpermissions)
+    /**--设备兼容框架：https://github.com/getActivity/DeviceCompat--**/
+    api("com.github.getActivity:DeviceCompat:1.0")
     /**-- Lifecycle components 生命周期管理--**/
     api(libs.androidx.lifecycle.lifecycle.viewmodel.ktx4)
 
