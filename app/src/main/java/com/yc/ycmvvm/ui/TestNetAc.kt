@@ -4,14 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import com.yc.ycmvvm.R
 import com.yc.ycmvvm.base.YcBaseActivity
 import com.yc.ycmvvm.config.YcInit
+import com.yc.ycmvvm.data.net.LoginReq2
 import com.yc.ycmvvm.databinding.TestNetAcBinding
 import com.yc.ycmvvm.extension.ycLogE
 import com.yc.ycmvvm.net.ApiService
+import com.yc.ycmvvm.net.YcRetrofitNoVerifierUtil
 import com.yc.ycmvvm.net.YcRetrofitUtil
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -35,14 +39,27 @@ class TestNetAc : YcBaseActivity<TestNetAcBinding>(TestNetAcBinding::inflate) {
         testSseBtn.setOnClickListener {
             ycLaunch {
                 withContext(Dispatchers.IO) {
-                    testSee()
+                    test()
                 }
             }
         }
     }
 
+    private fun test() {
+        val url = ""
+        val retrofit = YcRetrofitNoVerifierUtil.createNoVerifier(url)
+        val api = retrofit.create(ApiService::class.java)
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val data = api.login(LoginReq2())
+                ycLogE(data.toString())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     private fun testSee() {
-//        val sseUrl = "http://192.168.30.122:2320/test/stream-sse"
         val sseUrl = ""
         val request = Request.Builder()
             .url(sseUrl)

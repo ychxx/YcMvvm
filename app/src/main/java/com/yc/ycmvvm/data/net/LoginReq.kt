@@ -1,8 +1,7 @@
-package com.zrzk.pdaparkingleader.data.net
+package com.yc.ycmvvm.data.net
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.yc.ycmvvm.utils.YcPhoneUtils
 import java.io.Serializable
 
 @Keep

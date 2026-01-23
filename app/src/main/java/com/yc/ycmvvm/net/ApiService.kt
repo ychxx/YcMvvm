@@ -1,7 +1,8 @@
 package com.yc.ycmvvm.net
 
 import com.yc.ycmvvm.config.YcInit
-import com.zrzk.pdaparkingleader.data.net.LoginReq
+import com.yc.ycmvvm.data.net.LoginReq
+import com.yc.ycmvvm.data.net.LoginReq2
 import com.zrzk.pdaparkingleader.data.net.LoginResp
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -41,5 +42,13 @@ interface ApiService {
     suspend fun setGameProgress(
         @Query("progress") progress: Int,
         @Header(YcInit.OTHER_BASE_URL) baseUrl: String = "https://www.lovenimin.cn/",
+    ): NetResult<Any?>
+
+    /**
+     * 测试sse连接
+     */
+    @POST("/api/api/auth/login")
+    suspend fun login(
+        @Body para: LoginReq2,
     ): NetResult<Any?>
 }
