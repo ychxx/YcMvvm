@@ -11,11 +11,19 @@ import java.lang.ref.WeakReference
 
 open class YcViewPageCustomAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, private val createCustomView: () -> View) :
     YcViewPageAdapter(fragmentManager, lifecycle) {
+    var fm: FragmentManager? = null
+
+    init {
+        fm = fragmentManager
+    }
+
     open var tabUpdate: ((customView: View, hasSelect: Boolean, tabName: String?, position: Int) -> Unit)? = null
     override fun <T : Fragment> setFragmentList(newFragmentList: List<T>, tabNameList: List<String>, setSelected: Int?) {
         this.fragmentList.clear()
         this.fragmentList.forEach {
-            it.get()?.onDestroy()
+            it.get()?.also {
+                fm?.beginTransaction()?.remove(it)?.commitNowAllowingStateLoss()
+            }
         }
         this.fragmentList.addAll(newFragmentList.map { WeakReference(it) })
         this.tabLayout!!.removeAllTabs()

@@ -9,11 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
 import com.yc.ycmvvm.exception.IYcExceptionBase
-import com.yc.ycmvvm.exception.YcException
+import com.yc.ycmvvm.extension.toYcResultFail
 import com.yc.ycmvvm.extension.ycShowToast
 import com.yc.ycmvvm.net.YcResult
 import com.yc.ycmvvm.view.dialog.YcILoading
 import com.yc.ycmvvm.view.dialog.YcDialogLoading
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -126,16 +127,31 @@ abstract class YcBaseFragment<VB : ViewBinding>(private val createVB: ((LayoutIn
         mYcLoadingDialog.loadHide()
     }
 
-    protected fun launch(block: suspend () -> Unit) {
+    protected fun ycLaunch(block: suspend () -> Unit) {
         lifecycleScope.launch {
             block()
         }
     }
 
-    protected fun <T> LiveData<T>.ycObserve(observer: Observer<T>) {
-        this.observe(this@YcBaseFragment, observer)
+    protected fun <T> LiveData<T>.ycObserve(call: (data: T) -> Unit) {
+        this.observe(this@YcBaseFragment, Observer {
+            try {
+                call.invoke(it)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                call.invoke(e.toYcResultFail() as T)
+            }
+        })
     }
-
+    protected fun <T> SharedFlow<T>.ycObserve(call: (data: T) -> Unit) {
+        ycLaunch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                this@ycObserve.collect {
+                    call.invoke(it)
+                }
+            }
+        }
+    }
 //    protected fun <T : Any, VH : RecyclerView.ViewHolder> PagingDataAdapter<T, VH>.ycSubmitData(pagingData: PagingData<T>) {
 //        this.submitData(this@YcBaseFragment.viewLifecycleOwner.lifecycle, pagingData)
 //    }

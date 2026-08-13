@@ -90,4 +90,5 @@ dependencies {
 //    implementation("com.github.seapeak233:AndroidDocViewer:0.1.3")
     // 图表
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.github.razerdp:BasePopup:2.2.10")
 }

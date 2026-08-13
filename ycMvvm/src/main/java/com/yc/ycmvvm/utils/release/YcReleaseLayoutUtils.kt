@@ -33,9 +33,9 @@ object YcReleaseLayoutUtils {
      * 为了兼容SmartRefreshLayout，它必须先在xml里创建一层FrameLayout包裹着RecycleView，无法动态去添加这层FrameLayout
      */
     fun replaceSmart(originalView: View, releaseView: View, containerFl: FrameLayout?) {
-        if(containerFl==null){
-            replace(originalView,releaseView)
-        }else{
+        if (containerFl == null) {
+            replace(originalView, releaseView)
+        } else {
             //判断是否有添加过
             if (containerFl.indexOfChild(releaseView) == -1) {
                 containerFl.tag = CONTAINER_TAG + originalView.id
@@ -45,14 +45,15 @@ object YcReleaseLayoutUtils {
             showAndHideView(containerFl, releaseView)
         }
     }
+
     /**
      * 恢复原来的originalView
      * 为了兼容SmartRefreshLayout，它必须先在xml里创建一层FrameLayout包裹着RecycleView，无法动态去添加这层FrameLayout
      */
     fun recoverySmart(originalView: View, containerFl: FrameLayout?) {
-        if(containerFl==null){
+        if (containerFl == null) {
             recovery(originalView)
-        }else{
+        } else {
             showAndHideView(containerFl, originalView)
         }
     }

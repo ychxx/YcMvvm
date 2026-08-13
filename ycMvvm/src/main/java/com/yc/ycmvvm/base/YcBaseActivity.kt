@@ -7,19 +7,23 @@ import android.view.LayoutInflater
 import androidx.activity.ComponentActivity
 import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.yc.ycmvvm.exception.IYcExceptionBase
 import com.yc.ycmvvm.utils.YcActivityManager
 import com.yc.ycmvvm.exception.YcException
+import com.yc.ycmvvm.extension.toYcResultFail
 import com.yc.ycmvvm.extension.ycShowToast
 import com.yc.ycmvvm.net.YcResult
 import com.yc.ycmvvm.view.dialog.YcILoading
 import com.yc.ycmvvm.view.dialog.YcDialogLoading
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
 
@@ -85,10 +89,25 @@ abstract class YcBaseActivity<VB : ViewBinding>(private val createVB: ((LayoutIn
     protected fun ycLaunchIO(block: suspend () -> Unit) = lifecycleScope.launch(Dispatchers.IO) {
         block()
     }
-    protected fun <T> LiveData<T>.ycObserve(observer: Observer<T>) {
-        this.observe(this@YcBaseActivity, observer)
+    protected fun <T> LiveData<T>.ycObserve(call: (data: T) -> Unit) {
+        this.observe(this@YcBaseActivity, Observer {
+            try {
+                call.invoke(it)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                call.invoke(e.toYcResultFail() as T)
+            }
+        })
     }
-
+    protected fun <T> SharedFlow<T>.ycObserve(call: (data: T) -> Unit) {
+        ycLaunch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                this@ycObserve.collect {
+                    call.invoke(it)
+                }
+            }
+        }
+    }
 //    protected fun <T : Any, VH : RecyclerView.ViewHolder> PagingDataAdapter<T, VH>.ycSubmitData(pagingData: PagingData<T>) {
 //        this.submitData(this@YcBaseActivity.lifecycle, pagingData)
 //    }

@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <declare-styleable name="YcTabView">
+        <!-- 菜单项文本数组，例如 reference 指向 string-array -->
+        <attr name="menuItems" format="reference" />
+        <!-- 选中项的文字颜色 -->
+        <attr name="selectedTextColor" format="color" />
+        <!-- 未选中项的文字颜色 -->
+        <attr name="unselectedTextColor" format="color" />
+        <!-- 选中项的文字大小 -->
+        <attr name="selectedTextSize" format="dimension" />
+        <!-- 未选中项的文字大小 -->
+        <attr name="unselectedTextSize" format="dimension" />
+        <!-- 选中项的背景资源 -->
+        <attr name="selectedBackground" format="reference" />
+        <!-- 未选中项的背景资源 -->
+        <attr name="unselectedBackground" format="reference" />
+        <!-- 默认选中的索引 -->
+        <attr name="selectedIndex" format="integer" />
+    </declare-styleable>
 </resources>

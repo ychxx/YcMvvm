@@ -88,7 +88,7 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
                 ToAc.TestNet,
                 ToAc.Test,
                 ToAc.TestQr,
-                ToAc.TestRecycleView,
+                ToAc.TestRecycleView
             )
         )
         adapter.mItemClick = {
@@ -97,6 +97,7 @@ class MainActivity : YcBaseActivity<MainAcBinding>(MainAcBinding::inflate) {
                 ToAc.DownLoadApk -> {
                     lifecycleScope.launch(Dispatchers.IO) {}
                 }
+
                 else -> it.to(this@MainActivity)
             }
         }

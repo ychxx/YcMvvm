@@ -2,13 +2,16 @@ package com.yc.ycmvvm.extension
 
 import android.view.View
 import com.yc.ycmvvm.utils.YcTime
+import com.yc.ycmvvm.utils.YcTime.FORMAT_TIME_SECOND
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.math.BigDecimal
 import java.math.RoundingMode
 import java.nio.ByteBuffer
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -54,6 +57,7 @@ fun String?.ycToInt(): Int? = ycTryReturnData(block = {
 }, error = {
     return@ycTryReturnData null
 })
+
 fun String?.ycToLong(): Long? = ycTryReturnData(block = {
     return@ycTryReturnData this?.toLongOrNull()
 }, error = {
@@ -160,6 +164,37 @@ fun String?.ycIsEmpty(): Boolean {
 }
 
 /**
+ * 获取非空值，空则用默认值，非空时前面加上前缀
+ * @param prefix String   前缀
+ */
+fun String?.ycToNoEmptyPrefix(
+    prefix: String,
+    defaultData: String = YcAnyExt.mCommonDefaultString
+): String {
+    return if (this.ycIsEmpty()) {
+        defaultData
+    } else {
+        prefix + this
+    }
+}
+
+/**
+ * 将许空字符串转为时间戳
+ */
+fun String?.ycToTimeLong(
+    formatTimeInput: String = YcTime.FORMAT_TIME_SECOND,
+    defaultData: Long? = null
+): Long? {
+    return if (this.ycIsEmpty()) {
+        defaultData
+    } else {
+        ycTryReturnData({
+            YcTime.stringToDate(this!!, formatTimeInput)?.time
+        }, { defaultData })
+    }
+}
+
+/**
  * 将许空Int转为非空Int（空用0替代）
  */
 fun Int?.ycToNoEmpty(defaultData: Int = YcAnyExt.mCommonDefaultInt): Int {
@@ -182,6 +217,26 @@ fun Int?.ycToStringNoEmptyNoZero(defaultData: String = YcAnyExt.mCommonDefaultSt
     } else {
         "$this"
     }
+}
+
+/**
+ * long类型的时间转换成String类型
+ */
+fun Long?.ycToTimeString(format: String = FORMAT_TIME_SECOND): String {
+    try {
+        if (this == null) {
+            return ""
+        }
+        val simpleDateFormat = SimpleDateFormat(format, Locale.getDefault())
+        return simpleDateFormat.format(Date(this))
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return ""
+    }
+}
+
+fun BigDecimal?.ycToString(defaultData: String = YcAnyExt.mCommonDefaultString): String {
+    return this?.toString() ?: defaultData
 }
 
 /**

@@ -7,6 +7,7 @@ import com.google.gson.stream.MalformedJsonException
 import com.yc.ycmvvm.exception.YcNetException
 import com.yc.ycmvvm.data.constans.YcNetErrorCode
 import com.yc.ycmvvm.exception.YcException
+import com.yc.ycmvvm.net.YcResult
 import org.json.JSONException
 import retrofit2.HttpException
 import java.lang.NullPointerException
@@ -36,6 +37,7 @@ fun Throwable.toYcException(): YcException {
                 YcException("网络请求错误", code())
             }
         }
+
         is ConnectException -> YcException("连接失败", YcNetErrorCode.NETWORK_NO)
         is SocketTimeoutException -> YcException("网络超时", YcNetErrorCode.TIME_OUT_ERROR)
         is NullPointerException -> YcException("空异常", YcNetErrorCode.DATE_NULL_ERROR)
@@ -82,4 +84,10 @@ inline fun <reified T, reified R> T.ycTryReturnData(block: (T) -> R, error: (Thr
         e.printStackTrace()
         error(e)
     }
+}
+fun Throwable.toYcResultFail(): YcResult.Fail {
+    return this.toYcException().toYcResultFail()
+}
+fun YcException.toYcResultFail(): YcResult.Fail {
+    return YcResult.Fail(this)
 }
