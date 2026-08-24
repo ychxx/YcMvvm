@@ -51,6 +51,7 @@ abstract class YcBaseActivity<VB : ViewBinding>(private val createVB: ((LayoutIn
         super.onDestroy()
         YcActivityManager.finishActivity(this)
     }
+
     fun getContext(): Context {
         return this
     }
@@ -83,12 +84,15 @@ abstract class YcBaseActivity<VB : ViewBinding>(private val createVB: ((LayoutIn
     protected fun ycLaunch(block: suspend () -> Unit) = lifecycleScope.launch {
         block()
     }
+
     protected fun ycLaunchMain(block: suspend () -> Unit) = lifecycleScope.launch(Dispatchers.Main) {
         block()
     }
+
     protected fun ycLaunchIO(block: suspend () -> Unit) = lifecycleScope.launch(Dispatchers.IO) {
         block()
     }
+
     protected fun <T> LiveData<T>.ycObserve(call: (data: T) -> Unit) {
         this.observe(this@YcBaseActivity, Observer {
             try {
@@ -99,9 +103,10 @@ abstract class YcBaseActivity<VB : ViewBinding>(private val createVB: ((LayoutIn
             }
         })
     }
-    protected fun <T> SharedFlow<T>.ycObserve(call: (data: T) -> Unit) {
+
+    protected fun <T> SharedFlow<T>.ycObserve(state: Lifecycle.State = Lifecycle.State.CREATED, call: (data: T) -> Unit) {
         ycLaunch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(state) {
                 this@ycObserve.collect {
                     call.invoke(it)
                 }

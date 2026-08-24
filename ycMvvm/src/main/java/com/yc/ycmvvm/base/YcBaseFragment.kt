@@ -143,9 +143,10 @@ abstract class YcBaseFragment<VB : ViewBinding>(private val createVB: ((LayoutIn
             }
         })
     }
-    protected fun <T> SharedFlow<T>.ycObserve(call: (data: T) -> Unit) {
+
+    protected fun <T> SharedFlow<T>.ycObserve(state: Lifecycle.State = Lifecycle.State.CREATED, call: (data: T) -> Unit) {
         ycLaunch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(state) {
                 this@ycObserve.collect {
                     call.invoke(it)
                 }
