@@ -1,5 +1,7 @@
 package com.yc.ycmvvm.base
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.*
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,9 +24,8 @@ open class YcBaseViewModel : ViewModel() {
      */
     protected val _mIsShowLoading = MutableLiveData<YcLoadingBean>()
     val mIsShowLoading: LiveData<YcLoadingBean> = _mIsShowLoading
-    protected var mLoadingJob: Job? = null
-    protected var mLoadingShowJob: Job? = null
     protected open var mDefaultDelayTime = 1500L
+    private val mainHandler = Handler(Looper.getMainLooper())
 
 
     protected fun <T> ycFlow(
@@ -71,6 +72,29 @@ open class YcBaseViewModel : ViewModel() {
         viewModelScope.launch {
             this@ycCollect.collect {
                 block.invoke(it)
+            }
+        }
+    }
+
+    protected inline fun <Data> Flow<Data>.ycCollect2(
+        crossinline handle: (ex: Throwable) -> YcException? = { ex -> errHandle(ex) },
+        hasShowLoading: Boolean = true,
+        hasAutoClose: Boolean = true,
+        crossinline block: (YcResult<Data>) -> Unit
+    ) {
+        viewModelScope.launch {
+            this@ycCollect2.onStart {
+                if (hasShowLoading) showLoading()
+            }.onCompletion {
+                if (hasAutoClose) hideLoading()
+            }.catch {
+                it.printStackTrace()
+                val result = handle.invoke(it)
+                if (result != null) {
+                    block.invoke(YcResult.Fail(result))
+                }
+            }.flowOn(Dispatchers.IO).collect {
+                block.invoke(YcResult.Success(it))
             }
         }
     }
@@ -122,22 +146,19 @@ open class YcBaseViewModel : ViewModel() {
      * @param delayTime Long  延迟delayTime毫秒后，再显示，减少请求很快返回时，导致闪下的体验。
      * 如果在delayTime毫秒内，请求就完成了，对话框就不会显示
      */
-    protected fun showLoading(msg: String? = null, delayTime: Long = mDefaultDelayTime): Job {
-        mLoadingShowJob?.cancel()
-        mLoadingShowJob = viewModelScope.launch {
-            delay(delayTime)
+    protected fun showLoading(msg: String? = null, delayTime: Long = mDefaultDelayTime) {
+        mainHandler.post {
             _mIsShowLoading.postValue(YcLoadingBean.show(msg))
         }
-        return mLoadingShowJob!!
     }
 
     /**
      * 隐藏加载框
      */
     protected fun hideLoading() {
-        _mIsShowLoading.postValue(YcLoadingBean.hide())
-        mLoadingJob?.cancel()
-        mLoadingShowJob?.cancel()
+        mainHandler.post {
+            _mIsShowLoading.postValue(YcLoadingBean.hide())
+        }
     }
 
     override fun onCleared() {
