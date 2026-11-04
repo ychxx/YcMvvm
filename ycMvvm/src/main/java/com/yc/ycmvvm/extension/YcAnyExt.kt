@@ -193,7 +193,13 @@ fun String?.ycToTimeLong(
         }, { defaultData })
     }
 }
-
+fun String?.ycLetIsNoEmpty(call: (String) -> String): String {
+    return if (this.ycIsEmpty()) {
+        ""
+    } else {
+        call.invoke(this!!)
+    }
+}
 /**
  * 将许空Int转为非空Int（空用0替代）
  */

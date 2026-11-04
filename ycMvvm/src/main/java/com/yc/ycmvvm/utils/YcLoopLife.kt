@@ -16,6 +16,7 @@ open class YcLoopLife(val owner: LifecycleOwner) {
                 finish()
             }
         })
+        reset()
     }
 
     /**
@@ -48,10 +49,10 @@ open class YcLoopLife(val owner: LifecycleOwner) {
      * @return true 延迟，false 不延迟，立刻执行
      */
     private var mIsDelay: AtomicReference<Boolean> = AtomicReference(false)
+    private var mObserver: Observer<Any?>? = null
+    @Volatile
+    private var mFinished = false
 
-    init {
-        reset()
-    }
 
     fun stop() {
         mIsDelay.set(true)
@@ -66,24 +67,27 @@ open class YcLoopLife(val owner: LifecycleOwner) {
     }
 
     fun reset() {
-        mPost.observe(owner, Observer {
+        if (mFinished) return
+        // 先移除旧 observer，避免累积
+        mObserver?.let { mPost.removeObserver(it) }
+        val observer = Observer<Any?> {
             mJopHandle?.cancel()
             mJopHandle = owner.lifecycleScope.launch {
-                while (mIsDelay.get()) {
-                    delay(100)
-                }
+                while (mIsDelay.get()) delay(100)
                 mBlock?.invoke()
                 start(true)
             }
-        })
+        }
+        mObserver = observer
+        mPost.observe(owner, observer)
     }
 
     open fun start(isWait: Boolean = false) {
+        if (mFinished) return
         mJop?.cancel()
         mJop = owner.lifecycleScope.launch {
-            if (isWait)
-                delay(mPeriodTime)
-            mPost.postValue(null)
+            if (isWait) delay(mPeriodTime)
+            if (!mFinished) mPost.postValue(null)
         }
     }
 
@@ -91,7 +95,10 @@ open class YcLoopLife(val owner: LifecycleOwner) {
      * 主动关闭（onDestroy一般会自动调用该方法）
      */
     fun finish() {
+        mFinished = true
         mJop?.cancel()
         mJopHandle?.cancel()
+        mObserver?.let { mPost.removeObserver(it) }
+        mObserver = null
     }
 }

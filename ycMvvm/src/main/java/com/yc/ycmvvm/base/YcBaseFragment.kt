@@ -93,7 +93,7 @@ abstract class YcBaseFragment<VB : ViewBinding>(private val createVB: ((LayoutIn
     protected inline fun <reified VM : YcBaseViewModel> Fragment.ycViewModels(): Lazy<VM> {
         return lazy {
             val vm: VM = ViewModelProvider(this, defaultViewModelProviderFactory)[VM::class.java]
-            vm.mIsShowLoading.observe(this@YcBaseFragment) {
+            vm.mIsShowLoading.observe(this@YcBaseFragment.viewLifecycleOwner) {
                 if (it.isShow) {
                     this@YcBaseFragment.showLoading(it.msg)
                 } else {
@@ -108,7 +108,7 @@ abstract class YcBaseFragment<VB : ViewBinding>(private val createVB: ((LayoutIn
     protected inline fun <reified VM : YcBaseViewModel> Fragment.ycViewModelsActivity(): Lazy<VM> {
         return lazy {
             val vm: VM = ViewModelProvider(requireActivity().viewModelStore, defaultViewModelProviderFactory)[VM::class.java]
-            vm.mIsShowLoading.observe(this@YcBaseFragment) {
+            vm.mIsShowLoading.observe(this@YcBaseFragment.viewLifecycleOwner) {
                 if (it.isShow) {
                     this@YcBaseFragment.showLoading(it.msg)
                 } else {
@@ -128,13 +128,13 @@ abstract class YcBaseFragment<VB : ViewBinding>(private val createVB: ((LayoutIn
     }
 
     protected fun ycLaunch(block: suspend () -> Unit) {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             block()
         }
     }
 
     protected fun <T> LiveData<T>.ycObserve(call: (data: T) -> Unit) {
-        this.observe(this@YcBaseFragment, Observer {
+        this.observe(this@YcBaseFragment.viewLifecycleOwner, Observer {
             try {
                 call.invoke(it)
             } catch (e: Exception) {

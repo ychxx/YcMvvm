@@ -1,7 +1,9 @@
 package com.yc.ycmvvm.utils
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.yc.ycmvvm.extension.ycIsTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,42 +16,48 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 
 class YcLoop2 {
-    /**
-     *  作用域
-     */
-    protected val mScope = CoroutineScope(Job() + Dispatchers.IO)
-
-    /**
-     * 句柄
-     */
+    protected var mScope: CoroutineScope? = null
     protected var mJop: Job? = null
-
-    /**
-     * 间隔时间(单位毫秒)
-     */
     var mPeriodTime: Long = 2000L
-
-    private var mState: AtomicInteger = AtomicInteger(0)
-    protected val _mPost: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    protected val _mPost = MutableLiveData<Boolean>(false)
     val mPost: LiveData<Boolean> = _mPost
-    open fun start(isWait: Boolean = false) {
-        if (mState.get() != -1) {
+    var mCall: (() -> Unit)? = null
+    private val mLoopFlag = AtomicLong(0)
+    private val mObservers = mutableListOf<Observer<Boolean>>()
+
+    fun loopObserve(owner: LifecycleOwner, block: (Boolean) -> Unit) {
+        val observer = Observer<Boolean> { block(it) }
+        mObservers.add(observer)
+        mPost.observe(owner, observer)
+    }
+
+    fun start(isWait: Boolean = false) {
+        if (mScope?.isActive != true) {
+            mScope = CoroutineScope(Job() + Dispatchers.IO)
+        }
+        mLoopFlag.set(System.currentTimeMillis() + YcRandom.getInt(100))
+        startLoop(isWait, mLoopFlag.get())
+    }
+
+    private fun startLoop(isWait: Boolean, loopFlag: Long) {
+        if (mLoopFlag.get() == loopFlag) {
             mJop?.cancel()
-            mState.set(1)
-            mJop = mScope.launch {
+            mJop = mScope?.launch {
                 try {
                     if (isWait)
                         delay(mPeriodTime)
-                    if (mState.get() != -1 && isActive) {
+                    if (mLoopFlag.get() == loopFlag && isActive) {
                         _mPost.postValue(!_mPost.value.ycIsTrue())
-                        start(true)
+                        mCall?.invoke()
+                        startLoop(true, loopFlag)
                     }
                 } catch (e: Exception) {
                     coroutineContext.ensureActive()
-                    if (mState.get() != -1 && isActive) {
-                        start(true)
+                    if (mLoopFlag.get() == loopFlag && isActive) {
+                        startLoop(true, loopFlag)
                     }
                     e.printStackTrace()
                 }
@@ -57,16 +65,15 @@ class YcLoop2 {
         }
     }
 
-    /**
-     * 主动关闭（onDestroy一般会自动调用该方法）
-     */
+
     fun finish() {
-        try {
-            mState.set(-1)
-            mJop?.cancel()
-            mScope.cancel()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        mLoopFlag.set(0)
+        mJop?.cancel();
+        mJop = null
+        mScope?.cancel();
+        mScope = null
+        mCall = null
+        mObservers.forEach { mPost.removeObserver(it) }
+        mObservers.clear()
     }
 }
