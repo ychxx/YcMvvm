@@ -76,11 +76,11 @@ open class YcBaseViewModel : ViewModel() {
         }
     }
 
-    protected inline fun <Data> Flow<Data>.ycCollect2(
-        crossinline handle: (ex: Throwable) -> YcException? = { ex -> errHandle(ex) },
+    protected fun <Data> Flow<Data>.ycCollect2(
+        handle: (ex: Throwable) -> YcException? = { ex -> errHandle(ex) },
         hasShowLoading: Boolean = true,
         hasAutoClose: Boolean = true,
-        crossinline block: (YcResult<Data>) -> Unit
+        block: (YcResult<Data>) -> Unit
     ) {
         viewModelScope.launch {
             this@ycCollect2.onStart {
