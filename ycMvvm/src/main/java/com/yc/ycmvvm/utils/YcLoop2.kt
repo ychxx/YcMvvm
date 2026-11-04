@@ -22,7 +22,7 @@ class YcLoop2 {
     protected var mScope: CoroutineScope? = null
     protected var mJop: Job? = null
     var mPeriodTime: Long = 2000L
-    protected val _mPost = MutableLiveData<Boolean>(false)
+    protected val _mPost = MutableLiveData<Boolean>()
     val mPost: LiveData<Boolean> = _mPost
     var mCall: (() -> Unit)? = null
     private val mLoopFlag = AtomicLong(0)
