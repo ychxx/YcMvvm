@@ -68,7 +68,7 @@ open class YcBaseViewModel : ViewModel() {
         }
     }.flowOn(Dispatchers.IO)
 
-    protected inline fun <Data> Flow<Data>.ycCollect(crossinline block: (Data) -> Unit) {
+    protected fun <Data> Flow<Data>.ycCollect(block: (Data) -> Unit) {
         viewModelScope.launch {
             this@ycCollect.collect {
                 block.invoke(it)
@@ -108,7 +108,7 @@ open class YcBaseViewModel : ViewModel() {
     }
 
 
-    protected inline fun ycLaunch(crossinline block: suspend (coroutineScope: CoroutineScope) -> Unit): Job {
+    protected fun ycLaunch(block: suspend (coroutineScope: CoroutineScope) -> Unit): Job {
         return viewModelScope.launch {
             block(this)
         }
